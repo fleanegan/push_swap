@@ -1,0 +1,39 @@
+==377396== Memcheck, a memory error detector
+==377396== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==377396== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==377396== Command: test/test_executable.o
+==377396== 
+test/test_executable.o: error while loading shared libraries: libcriterion.so.3: cannot open shared object file: No such file or directory
+==377396== Jump to the invalid address stated on the next line
+==377396==    at 0x1030: ???
+==377396==    by 0x401DA47: fatal_error (dl-error-skeleton.c:78)
+==377396==    by 0x401DAB7: _dl_signal_exception (dl-error-skeleton.c:102)
+==377396==    by 0x40106E1: _dl_map_object_deps (dl-deps.c:612)
+==377396==    by 0x4004063: dl_main (rtld.c:1805)
+==377396==    by 0x401CC3A: _dl_sysdep_start (dl-sysdep.c:252)
+==377396==    by 0x400204B: _dl_start_final (rtld.c:449)
+==377396==    by 0x400204B: _dl_start (rtld.c:539)
+==377396==    by 0x4001107: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==377396==  Address 0x1030 is not stack'd, malloc'd or (recently) free'd
+==377396== 
+==377396== 
+==377396== Process terminating with default action of signal 11 (SIGSEGV)
+==377396==  Bad permissions for mapped region at address 0x1030
+==377396==    at 0x1030: ???
+==377396==    by 0x401DA47: fatal_error (dl-error-skeleton.c:78)
+==377396==    by 0x401DAB7: _dl_signal_exception (dl-error-skeleton.c:102)
+==377396==    by 0x40106E1: _dl_map_object_deps (dl-deps.c:612)
+==377396==    by 0x4004063: dl_main (rtld.c:1805)
+==377396==    by 0x401CC3A: _dl_sysdep_start (dl-sysdep.c:252)
+==377396==    by 0x400204B: _dl_start_final (rtld.c:449)
+==377396==    by 0x400204B: _dl_start (rtld.c:539)
+==377396==    by 0x4001107: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==377396== 
+==377396== HEAP SUMMARY:
+==377396==     in use at exit: 0 bytes in 0 blocks
+==377396==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==377396== 
+==377396== All heap blocks were freed -- no leaks are possible
+==377396== 
+==377396== For lists of detected and suppressed errors, rerun with: -s
+==377396== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
