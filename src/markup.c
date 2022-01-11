@@ -38,27 +38,27 @@ int global_max_markup_count, t_list *old_candidate, t_list *new_candidate)
 		CONTENT_OF_ELEMENT(new_candidate)->index));
 }
 
-void	markup_all_elements_according_to_reference(t_list *stack, t_list *candidate)
+void	markup_all_elements_according_to_reference(t_list *stack, t_list *reference)
 {
 	t_list	*last_element;
 	int		has_reached_start;
 	int		global_max_value;
 
-	if (! CONTENT_OF_ELEMENT(candidate)->is_on_stack_a)
+	if (! CONTENT_OF_ELEMENT(reference)->is_on_stack_a || ! stack)
 		return ;
-	global_max_value = CONTENT_OF_ELEMENT(candidate)->i;
+	global_max_value = CONTENT_OF_ELEMENT(reference)->i;
 	has_reached_start = 0;
 	last_element = ft_lstlast(stack);
 	close_stack_ring(stack, last_element);
-	stack = candidate;
-	//printf("begin calc with candidate %d\n", CONTENT_OF_ELEMENT(candidate)->i);
+	stack = reference;
+	//printf("begin calc with reference %d\n", CONTENT_OF_ELEMENT(reference)->i);
 	while (! has_reached_start)
 	{
 		//printf("glob max %d, ce %d \n",global_max_value, CONTENT_OF_ELEMENT(stack)->i);
-		markup_one_element(candidate, stack, &global_max_value);
-		//printf("candidate %d, curr %d, next %d\n", CONTENT_OF_ELEMENT(candidate)->i, CONTENT_OF_ELEMENT(stack)->i, CONTENT_OF_ELEMENT(stack->next)->i);
+		markup_one_element(reference, stack, &global_max_value);
+		//printf("reference %d, curr %d, next %d\n", CONTENT_OF_ELEMENT(reference)->i, CONTENT_OF_ELEMENT(stack)->i, CONTENT_OF_ELEMENT(stack->next)->i);
 		stack = stack->next;
-		has_reached_start = (stack == candidate);
+		has_reached_start = (stack == reference);
 	}
 	open_stack_ring(stack, last_element);
 }
@@ -102,7 +102,7 @@ int	is_swapping_a_good_idea(t_list *stack, t_list *markup_reference)
 //	printf("element %d, should stay %d, markup reference %d? \n", CONTENT_OF_ELEMENT(stack)->i, CONTENT_OF_ELEMENT(stack)->should_stay_on_stack_a, CONTENT_OF_ELEMENT(markup_reference)->i);
 //	puts("reached first markup for ref");
 	markup_all_elements_according_to_reference(stack, markup_reference);
-	if (stack->next && (CONTENT_OF_ELEMENT(stack)->should_stay_on_stack_a && CONTENT_OF_ELEMENT(stack->next)->should_stay_on_stack_a))
+	if (stack && stack->next && (CONTENT_OF_ELEMENT(stack)->should_stay_on_stack_a && CONTENT_OF_ELEMENT(stack->next)->should_stay_on_stack_a))
 		return (0);
 //	puts("reached first count for ref");
 	markup_count_before = count_markups(stack);

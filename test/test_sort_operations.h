@@ -97,3 +97,72 @@ Test(test_move_to_top, moving_second_element_to_top_will_use_ra)
 	ft_lstclear(&stack, free);
 	ft_lstclear(&history, do_not_free_content);
 }
+
+Test(test_calc_moves_to_top, moving_empty_stack_returns_zero)
+{
+	t_list	*stack = NULL;
+	t_list	*element = stack;
+
+	int result = calc_moves_to_top(stack, element);
+
+	cr_assert_eq(result, 0);
+	ft_lstclear(&stack, free);
+}
+
+Test(test_calc_moves_to_top, empty_element_returns_minus_one)
+{
+	t_list	*stack = generate_stack_a(1);
+	t_list	*element = NULL;
+
+	int result = calc_moves_to_top(stack, element);
+
+	cr_assert_eq(result, -1);
+	ft_lstclear(&stack, free);
+}
+
+
+Test(test_calc_moves_to_top, element_not_in_stack_returns_minus_one)
+{
+	t_list	*stack = generate_stack_a(1);
+	t_list	*element = generate_stack_b(1);
+
+	int result = calc_moves_to_top(stack, element);
+
+	cr_assert_eq(result, -1);
+	ft_lstclear(&stack, free);
+}
+
+Test(test_calc_moves_to_top, top_element_returns_zero)
+{
+	t_list	*stack = generate_stack_a(1);
+	t_list	*element = stack;
+
+	int result = calc_moves_to_top(stack, element);
+
+	cr_assert_eq(result, 0);
+	ft_lstclear(&stack, free);
+}
+
+
+Test(test_calc_moves_to_top, bottom_element_needs_one_move_to_top)
+{
+	t_list	*stack = generate_stack_a(3);
+	t_list	*element = ft_lstlast(stack);
+
+	int result = calc_moves_to_top(stack, element);
+
+	cr_assert_eq(result, 1);
+	ft_lstclear(&stack, free);
+}
+
+Test(test_calc_moves_to_top, element_in_lower_half_needs_two_moves_to_top)
+{
+	t_list	*stack = generate_stack_a(5);
+	t_list	*element = ft_lstget_element_by_index(stack, 3);
+
+	puts("test");
+	int result = calc_moves_to_top(stack, element);
+
+	cr_assert_eq(result, 2);
+	ft_lstclear(&stack, free);
+}

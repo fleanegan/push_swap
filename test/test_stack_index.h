@@ -7,11 +7,12 @@ Test(test_list_index, indexing_an_empty_stack_does_nothing)
 	index_stack(stack);
 }
 
-Test(test_list_index, new_item_appears_on_stack_a)
+Test(test_list_index, new_item_appears_on_stack_a_and_should_not_stay_there)
 {
 	t_content *content = new_stack_content(0);
 
 	cr_assert(content->is_on_stack_a);
+	cr_assert(! content->should_stay_on_stack_a);
 	free(content);
 }
 
