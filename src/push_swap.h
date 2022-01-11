@@ -22,11 +22,13 @@ void		move_to_top(t_list **stack, t_list *element_to_move, t_list **history);
 void		do_not_free_content(void *content);
 void		markup_one_element(t_list *reference, t_list *element_to_be_marked_up, int *global_max);
 t_list		*calc_markup_reference(t_list *stack);
-void		markup_all_elements_according_to_reference(t_list *stack, t_list *candidate);
+void		markup_all_elements_according_to_reference(t_list *stack, t_list *reference);
 int			count_markups(t_list *stack);
 int			is_swapping_a_good_idea(t_list *stack, t_list *markup_reference);
 void		close_stack_ring(t_list *stack, t_list *last_element);
 void		open_stack_ring(t_list *stack, t_list *last_element);
 void		fill_b(t_list **a, t_list **b, t_list **history);
 int			count_elements_to_be_moved_to_b(t_list *a);
+int			calc_moves_to_top(t_list *stack, t_list *element);
+
 #endif //PUSH_SWAP_H

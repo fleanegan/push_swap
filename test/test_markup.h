@@ -165,6 +165,7 @@ Test(test_markup_is_swapping_a_good_idea, yes)
 	int	result = is_swapping_a_good_idea(stack, markup_reference);
 
 	cr_assert(result);
+	ft_lstclear(&stack, free);
 }
 
 Test(test_markup_is_swapping_a_good_idea, markup_is_the_same_before_and_after)
@@ -181,6 +182,7 @@ Test(test_markup_is_swapping_a_good_idea, markup_is_the_same_before_and_after)
 
 	cr_assert_neq(should_saved_element_stay_before, should_saved_element_stay_after, "bef %d, after %d", should_saved_element_stay_before, should_saved_element_stay_after);
 	cr_assert(result);
+	ft_lstclear(&stack, free);
 }
 
 Test(test_markup_is_swapping_a_good_idea, if_both_elements_are_allowed_to_stay_do_nothing_and_return_false)
@@ -192,6 +194,7 @@ Test(test_markup_is_swapping_a_good_idea, if_both_elements_are_allowed_to_stay_d
 	int	result = is_swapping_a_good_idea(stack, markup_reference);
 
 	cr_assert(! result);
+	ft_lstclear(&stack, free);
 }
 
 Test(test_markup_is_swapping_a_good_idea, recalculates)
@@ -208,6 +211,7 @@ Test(test_markup_is_swapping_a_good_idea, recalculates)
 
 	cr_assert(should_saved_element_stay_after, "bef %d, after %d", should_saved_element_stay_before, should_saved_element_stay_after);
 	cr_assert(! result);
+	ft_lstclear(&stack, free);
 }
 
 Test(test_markup_is_swapping_a_good_idead, no)
@@ -221,6 +225,7 @@ Test(test_markup_is_swapping_a_good_idead, no)
 	int	result = is_swapping_a_good_idea(stack, markup_reference);
 
 	cr_assert(! result);
+	ft_lstclear(&stack, free);
 }
 
 Test(test_markup_is_swapping_a_good_idead, check_does_not_alter_stack_order)
@@ -233,6 +238,7 @@ Test(test_markup_is_swapping_a_good_idead, check_does_not_alter_stack_order)
 	is_swapping_a_good_idea(stack, markup_reference);
 
 	cr_assert_eq(stack->next, first_element);
+	ft_lstclear(&stack, free);
 }
 
 Test(test_count_elements_to_be_moved_to_b, no_one_stays_in_a)
@@ -243,4 +249,5 @@ Test(test_count_elements_to_be_moved_to_b, no_one_stays_in_a)
 	int result = count_elements_to_be_moved_to_b(stack);
 
 	cr_assert_eq(result, 3);
+	ft_lstclear(&stack, free);
 }

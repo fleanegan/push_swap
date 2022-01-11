@@ -5,7 +5,10 @@ void	fill_b(t_list **a, t_list **b, t_list **history)
 {
 	t_list		*markup_reference;
 
+	if (! a)
+		return ;
 	markup_reference = calc_markup_reference(*a);
+	markup_all_elements_according_to_reference(*a, markup_reference);
 	while (*a && count_elements_to_be_moved_to_b(*a))
 	{
 		markup_all_elements_according_to_reference(*a, markup_reference);

@@ -1,11 +1,19 @@
 #include "test_utils.h"
 
+Test(test_sort_operation_fill_b, NULL_test, .disabled=0)
+{
+	fill_b(NULL, NULL, NULL);
+}
+
 Test(test_sort_operation_fill_b, does_not_do_anything_if_all_elements_should_stay, .disabled=0)
+
 {
 	t_list	*a = generate_stack_a(4);
 	mark_stack_as_stay_on_a(a, 1);
-
 	t_list	*b = NULL;
+
+	fill_b(&a, &b, NULL);
+
 	t_list	*a_ref = a;
 	while (a)
 	{
@@ -133,4 +141,5 @@ Test(test_sort_operation_fill_b, do_noting_if_whole_stack_should_stay_on_a, .dis
 	cr_assert_null(history);
 	ft_lstput_str_bonus(history);
 	ft_lstclear(&history, do_not_free_content);
+	ft_lstclear(&a, free);
 }
