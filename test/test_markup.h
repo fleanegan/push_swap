@@ -238,7 +238,7 @@ Test(test_markup_is_swapping_a_good_idead, check_does_not_alter_stack_order)
 Test(test_count_elements_to_be_moved_to_b, no_one_stays_in_a)
 {
 	t_list 	*stack = generate_stack_a(3);
-	mark_stack_as_move_to_b(stack, 0);
+	mark_stack_as_stay_on_a(stack, 0);
 
 	int result = count_elements_to_be_moved_to_b(stack);
 

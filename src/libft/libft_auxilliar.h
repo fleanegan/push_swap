@@ -28,4 +28,5 @@ size_t	calc_min_unsigned(size_t a, size_t b);
 void	*ft_memccpy(void *dest, const void *src, int c, size_t n);
 void	ft_lstput_nbr_bonus(t_list *lst);
 void	ft_lstput_char_bonus(t_list *lst);
+void	ft_lstput_str_bonus(t_list *lst);
 #endif

@@ -31,3 +31,12 @@ void	ft_lstput_char_bonus(t_list *lst)
 		lst = lst->next;
 	}
 }
+
+void	ft_lstput_str_bonus(t_list *lst)
+{
+	while (lst)
+	{
+		ft_putstr_fd((char *)lst->content, STDOUT_FILENO);
+		lst = lst->next;
+	}
+}
