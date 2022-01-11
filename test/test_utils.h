@@ -91,7 +91,7 @@ t_list	*generate_test_stack_2()
 	return (stack);
 }
 
-void	mark_stack_as_move_to_b(t_list *stack, int value)
+void	mark_stack_as_stay_on_a(t_list *stack, int value)
 {
 	while (stack)
 	{
