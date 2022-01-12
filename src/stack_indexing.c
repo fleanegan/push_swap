@@ -15,7 +15,8 @@ void	*shallow_copy(void *content)
 	return (content);
 }
 
-void	index_stack(t_list *stack) {
+void	index_stack(t_list *stack)
+{
 	t_list	*cpy;
 	t_list	*cpy_start;
 	int		index;
@@ -24,7 +25,8 @@ void	index_stack(t_list *stack) {
 	cpy = ft_lstmap(stack, shallow_copy, free);
 	cpy_start = cpy;
 	ft_lstsort(&cpy, ascending_order);
-	while (cpy) {
+	while (cpy)
+	{
 		((t_content *) cpy->content)->index = index++;
 		cpy = cpy->next;
 	}

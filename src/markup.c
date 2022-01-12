@@ -16,14 +16,11 @@ t_list	*calc_markup_reference(t_list *stack) {
 	while (stack && (! candidate || first_element != stack))
 	{
 		markup_count = count_markups(stack);
-		//printf("dealing with element %d (index %d), which allows %d (current candidate does %d) elements to stay in a \n", CONTENT_OF_ELEMENT(stack)->i, CONTENT_OF_ELEMENT(stack)->index, markup_count,  global_max_markup_count);
-		//ft_lstput_nbr_bonus(stack);
 		if (! candidate || is_element_fitter_than_old_candidate(markup_count, global_max_markup_count, candidate, stack))
 		{
 			candidate = stack;
 			global_max_markup_count = markup_count;
 		}
-		//printf("current candidate %d \n", CONTENT_OF_ELEMENT(candidate)->i);
 		rotate(&stack, NULL);
 	}
 	return candidate;
@@ -51,12 +48,9 @@ void	markup_all_elements_according_to_reference(t_list *stack, t_list *reference
 	last_element = ft_lstlast(stack);
 	close_stack_ring(stack, last_element);
 	stack = reference;
-	//printf("begin calc with reference %d\n", CONTENT_OF_ELEMENT(reference)->i);
 	while (! has_reached_start)
 	{
-		//printf("glob max %d, ce %d \n",global_max_value, CONTENT_OF_ELEMENT(stack)->i);
 		markup_one_element(reference, stack, &global_max_value);
-		//printf("reference %d, curr %d, next %d\n", CONTENT_OF_ELEMENT(reference)->i, CONTENT_OF_ELEMENT(stack)->i, CONTENT_OF_ELEMENT(stack->next)->i);
 		stack = stack->next;
 		has_reached_start = (stack == reference);
 	}
@@ -98,22 +92,14 @@ int	is_swapping_a_good_idea(t_list *stack, t_list *markup_reference)
 	int	markup_count_before;
 	int	markup_count_after;
 
-//	puts("is swap");
-//	printf("element %d, should stay %d, markup reference %d? \n", CONTENT_OF_ELEMENT(stack)->i, CONTENT_OF_ELEMENT(stack)->should_stay_on_stack_a, CONTENT_OF_ELEMENT(markup_reference)->i);
-//	puts("reached first markup for ref");
 	markup_all_elements_according_to_reference(stack, markup_reference);
 	if (stack && stack->next && (CONTENT_OF_ELEMENT(stack)->should_stay_on_stack_a && CONTENT_OF_ELEMENT(stack->next)->should_stay_on_stack_a))
 		return (0);
-//	puts("reached first count for ref");
 	markup_count_before = count_markups(stack);
-//	puts("reached swap");
 	swap_first_two_elements(&stack, NULL);
-//	puts("reached second markup for ref");
 	markup_all_elements_according_to_reference(stack, markup_reference);
-//	puts("reached second count for ref");
 	markup_count_after = count_markups(stack);
 	swap_first_two_elements(&stack, NULL);
-//	puts("reached end of swap_checker<--------------");
 	if (markup_count_before < markup_count_after)
 		return (1);
 	return (0);

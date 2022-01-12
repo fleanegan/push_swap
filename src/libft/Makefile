@@ -37,6 +37,7 @@ SRCS	= 	ft_substr.c \
 			ft_isspace.c \
 			ft_strjoin.c \
 			ft_isascii.c \
+			ft_abs.c \
 			ft_lstiter.c \
 			ft_lstsize.c \
 			ft_lstadd_front.c \

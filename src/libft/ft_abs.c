@@ -1,37 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstget_element_by_index_bonus.c                 :+:      :+:    :+:   */
+/*   ft_abs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By:  <fschlute>                                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 09:01:54 by                   #+#    #+#             */
-/*   Updated: 2021/11/23 09:05:10 by                  ###   ########.fr       */
+/*   Created: 2021/11/23 09:01:52 by                   #+#    #+#             */
+/*   Updated: 2021/12/14 13:18:46 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstget_element_by_index(t_list *lst, size_t index)
+unsigned int	ft_abs(int in)
 {
-	while (index-- > 0)
-	{
-		if (lst)
-			lst = lst->next;
-		else
-			return (NULL);
-	}
-	return (lst);
-}
-
-t_list	*ft_lstget_element_by_function(t_list *lst, \
-int (*equals)(void *, int), int i)
-{
-	while (lst)
-	{
-		if (equals(lst->content, i))
-			return (lst);
-		lst = lst->next;
-	}
-	return (NULL);
+	if (in < 0)
+		return (-in);
+	return (in);
 }
