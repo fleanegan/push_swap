@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "push_swap.h"
 
 int	calc_direction_to_top(t_list *stack, t_list *element_to_move)
@@ -17,6 +18,23 @@ int	calc_direction_to_top(t_list *stack, t_list *element_to_move)
 		return (1);
 }
 
+int	calc_direction_to_bottom(t_list *stack, t_list *element_to_move)
+{
+	int	stack_size;
+
+	if (! stack)
+		return (-1);
+	stack_size = ft_lstsize(stack);
+	if (! stack_size || ! element_to_move)
+		return (0);
+	if (ft_lstlast(stack) == element_to_move)
+		return (0);
+	if (ft_lstget_index_of_element(stack, element_to_move) >= stack_size / 2)
+		return (-1);
+	else
+		return (1);
+}
+
 void	move_to_top(t_list **stack, t_list *element_to_move, t_list **history)
 {
 	int	direction;
@@ -25,6 +43,22 @@ void	move_to_top(t_list **stack, t_list *element_to_move, t_list **history)
 		return ;
 	direction = calc_direction_to_top(*stack, element_to_move);
 	while (*stack && element_to_move && element_to_move != *stack)
+	{
+		if (direction == -1)
+			reverse_rotate(stack, history);
+		if (direction == 1)
+			rotate(stack, history);
+	}
+}
+
+void	move_to_bottom(t_list **stack, t_list *element_to_move, t_list **history)
+{
+	int	direction;
+
+	if (! stack)
+		return ;
+	direction = calc_direction_to_bottom(*stack, element_to_move);
+	while (*stack && element_to_move && element_to_move != ft_lstlast(*stack))
 	{
 		if (direction == -1)
 			reverse_rotate(stack, history);
@@ -80,15 +114,58 @@ int	sorting_index_equals_to(void *content, int index)
 	return (0);
 }
 
+void	rotate_a_back_in_order(t_list **a, t_list **history)
+{
+	t_list	*smallest_element;
+
+	smallest_element = get_smallest_element_bigger_than_candidate(*a, INT_MIN);
+	move_to_top(a, smallest_element, history);
+}
+
+void bring_a_in_push_position(t_list **a, t_list *push_candidate, t_list **history)
+{
+	unsigned int		moves_for_minus_one;
+	unsigned int		moves_for_plus_one;
+	t_list				*minus_one;
+	t_list				*plus_one;
+	int					value_of_push_candidate;
+
+	value_of_push_candidate = CONTENT_OF_ELEMENT(push_candidate)->i;
+	minus_one = get_biggest_element_smaller_than_candidate((*a), value_of_push_candidate);
+	plus_one = get_smallest_element_bigger_than_candidate((*a), value_of_push_candidate);
+	if (minus_one)
+		moves_for_minus_one = calc_moves_to_bottom((*a), minus_one);
+	else
+	{
+		move_to_bottom(a, plus_one, history);
+		return ;
+	}
+	if (plus_one)
+		moves_for_plus_one = calc_moves_to_top((*a), plus_one);
+	else
+	{
+		move_to_top(a, minus_one, history);
+		return ;
+	}
+	if (moves_for_plus_one < moves_for_minus_one)
+		move_to_top(a, plus_one, history);
+	else
+		move_to_bottom(a, minus_one, history);
+}
+
 int	calc_moves_to_get_a_in_push_position(t_list *a, t_list *push_candidate)
 {
 	unsigned int		moves_for_minus_one;
 	unsigned int		moves_for_plus_one;
 	t_list				*minus_one;
 	t_list				*plus_one;
+	int					value_of_push_candidate;
 
-	minus_one = get_biggest_element_smaller_than_candidate(a, push_candidate);
-	plus_one = get_smallest_element_bigger_than_candidate(a, push_candidate);
+	if (! a)
+		return (1);
+	value_of_push_candidate = CONTENT_OF_ELEMENT(push_candidate)->i;
+	minus_one = get_biggest_element_smaller_than_candidate(a, value_of_push_candidate);
+	plus_one = get_smallest_element_bigger_than_candidate(a, value_of_push_candidate);
 	if (minus_one)
 		moves_for_minus_one = calc_moves_to_bottom(a, minus_one);
 	else

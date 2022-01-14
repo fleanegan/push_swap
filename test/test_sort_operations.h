@@ -190,6 +190,33 @@ Test(test_calc_moves_to_get_a_in_push_position, move_index_minus_one_to_top_is_s
 	ft_lstclear(&b, free);
 }
 
+Test(test_bring_a_in_push_position, pushing_zero_between_neg_and_pos)
+{
+	t_list	*a = generate_test_stack_2(5);
+	t_list	*b = generate_stack_b(1);
+	t_list	*element_to_push = b;
+
+	bring_a_in_push_position(&a, element_to_push, NULL);
+
+	cr_assert_eq(CONTENT_OF_ELEMENT(a)->i, 2);
+	ft_lstclear(&a, free);
+	ft_lstclear(&b, free);
+}
+
+Test(test_calc_moves_to_get_a_in_push_position, works_also_if_a_is_empty)
+{
+	t_list	*a = NULL;
+	t_list	*b = generate_stack_b(1);
+	push_first_element_of_a_to_b(&a, &b, NULL);
+	t_list	*element_to_push = b;
+
+	int result = calc_moves_to_get_a_in_push_position(a, element_to_push);
+
+	cr_assert_eq(result, 1);
+	ft_lstclear(&a, free);
+	ft_lstclear(&b, free);
+}
+
 Test(test_calc_moves_to_get_a_in_push_position, moving_index_plus_one_to_top_is_shortest)
 {
 	t_list	*a = generate_stack_a(4);
@@ -202,4 +229,47 @@ Test(test_calc_moves_to_get_a_in_push_position, moving_index_plus_one_to_top_is_
 	cr_assert_eq(result, 0);
 	ft_lstclear(&a, free);
 	ft_lstclear(&b, free);
+}
+
+
+Test(sort_b_back_into_a, pushing_only_element_of_b_empties_b_and_writes_pa)
+{
+	t_list	*a = NULL;
+	t_list	*b = generate_stack_b(1);
+	t_list	*history = NULL;
+
+	sort_b_back_into_a(&a, &b, &history);
+
+	cr_assert_null(b);
+	cr_assert_str_eq(history->content, "pa\n");
+	ft_lstclear(&a, free);
+	ft_lstclear(&b, free);
+	ft_lstclear(&history, do_not_free_content);
+}
+
+Test(sort_b_back_into_a, after_call_b_is_empty)
+{
+	t_list	*a = NULL;
+	t_list	*b = generate_stack_b(4);
+	t_list	*history = NULL;
+
+	sort_b_back_into_a(&a, &b, &history);
+
+	cr_assert_null(b);
+	ft_lstclear(&a, free);
+	ft_lstclear(&b, free);
+	ft_lstclear(&history, do_not_free_content);
+}
+
+Test(rotate_a_back_in_order, simple_test_all_checks_already_covered)
+{
+	t_list	*a = generate_stack_a(3);
+	t_list *history = NULL;
+	rotate(&a, NULL);
+
+	rotate_a_back_in_order(&a, &history);
+
+	cr_assert_eq(CONTENT_OF_ELEMENT(a)->i, 0);
+	ft_lstclear(&a, free);
+	ft_lstclear(&history, do_not_free_content);
 }

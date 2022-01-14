@@ -33,8 +33,13 @@ int			count_elements_to_be_moved_to_b(t_list *a);
 int			calc_moves_to_top(t_list *stack, t_list *element);
 int			calc_moves_to_bottom(t_list *stack, t_list *element);
 int			calc_moves_to_get_a_in_push_position(t_list *a, t_list *push_candidate);
+void		bring_a_in_push_position(t_list **a, t_list *push_candidate, t_list **history);
 int			sorting_index_equals_to(void *content, int index);
 int			calc_moves_to_push_element_onto_a(t_list *a, t_list *b, t_list *push_candidate);
-t_list		*get_biggest_element_smaller_than_candidate(t_list *a, t_list *push_candidate);
-t_list		*get_smallest_element_bigger_than_candidate(t_list *a, t_list *push_candidate);
+t_list		*get_biggest_element_smaller_than_candidate(t_list *a, int value_of_candidate);
+t_list		*get_smallest_element_bigger_than_candidate(t_list *a, int value_of_candidate);
+t_list		*calc_element_to_push(t_list *a, t_list *b);
+void		rotate_a_back_in_order(t_list **a, t_list **history);
+void		sort_b_back_into_a(t_list **a, t_list **b, t_list **history);
+t_list		*russian_algorithm(t_list *a);
 #endif //PUSH_SWAP_H
