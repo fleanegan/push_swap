@@ -2,7 +2,7 @@
 
 Test(test_integration, simple_valid_input, .disabled=false)
 {
-	t_list	*a = generate_test_stack_0();
+	t_meta_stack	*a = generate_test_stack_0();
 
 	t_list	*history = russian_algorithm(a);
 

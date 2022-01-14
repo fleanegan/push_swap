@@ -2,56 +2,56 @@
 #include "push_swap.h"
 
 void	update_history(t_list **history, const void *caller_identifier, const int is_on_stack_a);
-void	cut_element_from_a_to_b(t_list **a, t_list **b);
+void	cut_element_from_a_to_b(t_meta_stack *a, t_meta_stack *b);
 t_list	*pop_first_element_from_list(t_list **stack);
 t_list	*detach_last_element_from_list(t_list *stack);
 
-void	push_first_element_of_a_to_b(t_list **a, t_list **b, t_list **history)
+void	push_first_element_of_a_to_b(t_meta_stack *a, t_meta_stack *b, t_list **history)
 {
-	t_content	*content;
-
-	if (a && *a)
+	if (a && a->stack)
 	{
-		content = CONTENT_OF_ELEMENT(*a);
 		cut_element_from_a_to_b(a, b);
-		update_history(history, push_first_element_of_a_to_b, content->is_on_stack_a);
-		content->is_on_stack_a = ! content->is_on_stack_a;
+		a->size--;
+		if (! b->size++)
+			b->last = b->stack;
+		update_history(history, push_first_element_of_a_to_b, a->is_stack_a);
 	}
 }
 
-void	cut_element_from_a_to_b(t_list **a, t_list **b) {
+void	cut_element_from_a_to_b(t_meta_stack *a, t_meta_stack *b) {
 	t_list		*tmp;
 
-	tmp = (*a)->next;
-	ft_lstadd_front(b, *a);
-	*a = tmp;
+	tmp = a->stack->next;
+	ft_lstadd_front(&b->stack, a->stack);
+	a->stack = tmp;
 	if (tmp)
 		tmp->prev = NULL;
 }
 
-void	swap_first_two_elements(t_list **stack, t_list **history)
+void	swap_first_two_elements(t_meta_stack *meta_stack, t_list **history)
 {
 	t_list	*tmp;
 
-	if (stack && *stack && (*stack)->next)
+	if (meta_stack && meta_stack->stack && meta_stack->stack->next)
 	{
-		tmp = (*stack)->next;
-		(*stack)->next = tmp->next;
-		tmp->next = *stack;
-		*stack = tmp;
-		update_history(history, swap_first_two_elements, CONTENT_OF_ELEMENT(tmp)->is_on_stack_a);
+		tmp = meta_stack->stack->next;
+		meta_stack->stack->next = tmp->next;
+		tmp->next = meta_stack->stack;
+		meta_stack->stack = tmp;
+		update_history(history, swap_first_two_elements, meta_stack->is_stack_a);
 	}
 }
 
-void	rotate(t_list **stack, t_list **history)
+void	rotate(t_meta_stack *meta_stack, t_list **history)
 {
 	t_list	*last_element;
 
-	if (stack && *stack && (*stack)->next)
+	if (meta_stack->stack && meta_stack->stack->next)
 	{
-		last_element = detach_last_element_from_list(*stack);
-		ft_lstadd_front(stack, last_element);
-		update_history(history, rotate, CONTENT_OF_ELEMENT(last_element)->is_on_stack_a);
+		last_element = detach_last_element_from_list(meta_stack->stack);
+		meta_stack->last = last_element->prev;
+		ft_lstadd_front(&meta_stack->stack, last_element);
+		update_history(history, rotate, meta_stack->is_stack_a);
 	}
 }
 
@@ -65,15 +65,16 @@ t_list	*detach_last_element_from_list(t_list *stack) {
 	return (result);
 }
 
-void	reverse_rotate(t_list **stack, t_list **history)
+void	reverse_rotate(t_meta_stack *meta_stack, t_list **history)
 {
 	t_list	*first_element;
 
-	if (stack && *stack && (*stack)->next)
+	if (meta_stack->stack && meta_stack->stack->next)
 	{
-		first_element = pop_first_element_from_list(stack);
-		ft_lstadd_back(stack, first_element);
-		update_history(history, reverse_rotate, CONTENT_OF_ELEMENT(first_element)->is_on_stack_a);
+		first_element = pop_first_element_from_list(&meta_stack->stack);
+		meta_stack->last = first_element;
+		ft_lstadd_back(&meta_stack->stack, first_element);
+		update_history(history, reverse_rotate, meta_stack->is_stack_a);
 	}
 }
 
@@ -88,7 +89,8 @@ t_list	*pop_first_element_from_list(t_list **stack)
 	return (tmp);
 }
 
-void	update_history(t_list **history, const void *caller_identifier, const int is_on_stack_a) {
+void	update_history(t_list **history, const void *caller_identifier, const int is_on_stack_a)
+{
 	if (history)
 	{
 		if (caller_identifier == rotate)

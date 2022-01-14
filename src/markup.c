@@ -4,24 +4,26 @@
 int	is_element_fitter_than_old_candidate(int markup_count, \
 int global_max_markup_count, t_list *old_candidate, t_list *new_candidate);
 
-t_list	*calc_markup_reference(t_list *stack) {
+t_list	*calc_markup_reference(t_meta_stack *meta_stack)
+{
 	t_list	*first_element;
 	t_list	*candidate;
 	int		markup_count;
 	int		global_max_markup_count;
 
 	candidate = NULL;
-	first_element = stack;
+	first_element = meta_stack->stack;
 	global_max_markup_count = 0;
-	while (stack && (! candidate || first_element != stack))
+	while (meta_stack->stack && (! candidate || first_element != meta_stack->stack))
 	{
-		markup_count = count_markups(stack);
-		if (! candidate || is_element_fitter_than_old_candidate(markup_count, global_max_markup_count, candidate, stack))
+		markup_count = count_markups(meta_stack->stack);
+		if (! candidate ||
+			is_element_fitter_than_old_candidate(markup_count, global_max_markup_count, candidate, meta_stack->stack))
 		{
-			candidate = stack;
+			candidate = meta_stack->stack;
 			global_max_markup_count = markup_count;
 		}
-		rotate(&stack, NULL);
+		rotate(meta_stack, NULL);
 	}
 	return candidate;
 }
@@ -87,19 +89,21 @@ void	markup_one_element(t_list *reference, t_list *element_to_be_marked_up, int 
 	}
 }
 
-int	is_swapping_a_good_idea(t_list *stack, t_list *markup_reference)
+int	is_swapping_a_good_idea(t_meta_stack *meta_stack, t_list *markup_reference)
 {
 	int	markup_count_before;
 	int	markup_count_after;
 
-	markup_all_elements_according_to_reference(stack, markup_reference);
-	if (stack && stack->next && (CONTENT_OF_ELEMENT(stack)->should_stay_on_stack_a && CONTENT_OF_ELEMENT(stack->next)->should_stay_on_stack_a))
+	markup_all_elements_according_to_reference(meta_stack->stack, markup_reference);
+	if (meta_stack->stack && meta_stack->stack->next
+		&& (CONTENT_OF_ELEMENT(meta_stack->stack)->should_stay_on_stack_a
+		&& CONTENT_OF_ELEMENT(meta_stack->stack->next)->should_stay_on_stack_a))
 		return (0);
-	markup_count_before = count_markups(stack);
-	swap_first_two_elements(&stack, NULL);
-	markup_all_elements_according_to_reference(stack, markup_reference);
-	markup_count_after = count_markups(stack);
-	swap_first_two_elements(&stack, NULL);
+	markup_count_before = count_markups(meta_stack->stack);
+	swap_first_two_elements(meta_stack, NULL);
+	markup_all_elements_according_to_reference(meta_stack->stack, markup_reference);
+	markup_count_after = count_markups(meta_stack->stack);
+	swap_first_two_elements(meta_stack, NULL);
 	if (markup_count_before < markup_count_after)
 		return (1);
 	return (0);
