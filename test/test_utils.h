@@ -24,71 +24,76 @@ int	*malloc_int(int in)
 	return (result);
 }
 
-t_list	*generate_stack_a(int number_of_elements)
+t_meta_stack	*generate_stack_a(int number_of_elements)
 {
-	t_list	*result;
-	t_list	*tmp;
+	t_meta_stack	*meta_stack;
+	t_list			*tmp;
 
-	result = NULL;
+	meta_stack = new_meta_stack();
 	for (int i = 0; i < number_of_elements; i++)
 	{
 		tmp = ft_lstnew(new_stack_content(i));
-		ft_lstadd_back(&result, tmp);
+		ft_lstadd_back(&meta_stack->stack, tmp);
 	}
-	index_stack(result);
-	return (result);
+	index_stack(meta_stack->stack);
+	meta_stack->size = ft_lstsize(meta_stack->stack);
+	return (meta_stack);
 }
 
-t_list *generate_stack_b(int number_of_elements)
+t_meta_stack	*generate_stack_b(int number_of_elements)
 {
-	t_list	*stack;
-	t_list	*cpy;
+	t_meta_stack	*meta_stack;
+	t_list			*cpy;
 
-	stack = generate_stack_a(number_of_elements);
-	cpy = stack;
+	meta_stack = generate_stack_a(number_of_elements);
+	meta_stack->is_stack_a = 0;
+	cpy = meta_stack->stack;
 	while (cpy)
 	{
 		CONTENT_OF_ELEMENT(cpy)->is_on_stack_a = 0;
 		cpy = cpy->next;
 	}
-	return (stack);
+	return (meta_stack);
 }
 
-t_list	*generate_test_stack_0()
+t_meta_stack	*generate_test_stack_0()
 {
-	t_list	*stack = ft_lstnew(new_stack_content(30));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(2)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(-2)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(4)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(3)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(0)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(31)));
-	index_stack(stack);
-	return (stack);
+	t_meta_stack	*result = new_meta_stack();
+	result->stack = ft_lstnew(new_stack_content(30));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(2)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(-2)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(4)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(3)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(0)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(31)));
+	index_stack(result->stack);
+	return (result);
 }
 
-t_list	*generate_test_stack_1()
+t_meta_stack	*generate_test_stack_1()
 {
-	t_list	*stack = ft_lstnew(new_stack_content(2));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(-2)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(4)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(3)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(0)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(31)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(-2)));
-	index_stack(stack);
-	return (stack);
+	t_meta_stack	*result = new_meta_stack();
+	result->stack = ft_lstnew(new_stack_content(2));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(-2)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(4)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(3)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(0)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(31)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(-2)));
+	index_stack(result->stack);
+	return (result);
 }
 
-t_list	*generate_test_stack_2()
+t_meta_stack	*generate_test_stack_2()
 {
-	t_list	*stack = ft_lstnew(new_stack_content(2));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(3)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(4)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(31)));
-	ft_lstadd_back(&stack, ft_lstnew(new_stack_content(-2)));
-	index_stack(stack);
-	return (stack);
+	t_meta_stack	*result = new_meta_stack();
+	result->stack = ft_lstnew(new_stack_content(2));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(3)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(4)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(31)));
+	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(-2)));
+	index_stack(result->stack);
+	return (result);
 }
 
 void	mark_stack_as_stay_on_a(t_list *stack, int value)

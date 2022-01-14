@@ -35,35 +35,35 @@ int	calc_direction_to_bottom(t_list *stack, t_list *element_to_move)
 		return (1);
 }
 
-void	move_to_top(t_list **stack, t_list *element_to_move, t_list **history)
+void	move_to_top(t_meta_stack *meta_stack, t_list *element_to_move, t_list **history)
 {
 	int	direction;
 
-	if (! stack)
+	if (! meta_stack)
 		return ;
-	direction = calc_direction_to_top(*stack, element_to_move);
-	while (*stack && element_to_move && element_to_move != *stack)
+	direction = calc_direction_to_top(meta_stack->stack, element_to_move);
+	while (meta_stack->stack && element_to_move && element_to_move != meta_stack->stack)
 	{
 		if (direction == -1)
-			reverse_rotate(stack, history);
+			reverse_rotate(meta_stack, history);
 		if (direction == 1)
-			rotate(stack, history);
+			rotate(meta_stack, history);
 	}
 }
 
-void	move_to_bottom(t_list **stack, t_list *element_to_move, t_list **history)
+void	move_to_bottom(t_meta_stack *meta_stack, t_list *element_to_move, t_list **history)
 {
 	int	direction;
 
-	if (! stack)
+	if (! meta_stack)
 		return ;
-	direction = calc_direction_to_bottom(*stack, element_to_move);
-	while (*stack && element_to_move && element_to_move != ft_lstlast(*stack))
+	direction = calc_direction_to_bottom(meta_stack->stack, element_to_move);
+	while (meta_stack->stack && element_to_move && element_to_move != ft_lstlast(meta_stack->stack))
 	{
 		if (direction == -1)
-			reverse_rotate(stack, history);
+			reverse_rotate(meta_stack, history);
 		if (direction == 1)
-			rotate(stack, history);
+			rotate(meta_stack, history);
 	}
 }
 
@@ -114,15 +114,15 @@ int	sorting_index_equals_to(void *content, int index)
 	return (0);
 }
 
-void	rotate_a_back_in_order(t_list **a, t_list **history)
+void	rotate_a_back_in_order(t_meta_stack *a, t_list **history)
 {
 	t_list	*smallest_element;
 
-	smallest_element = get_smallest_element_bigger_than_candidate(*a, INT_MIN);
+	smallest_element = get_smallest_element_bigger_than_candidate(a->stack, INT_MIN);
 	move_to_top(a, smallest_element, history);
 }
 
-void bring_a_in_push_position(t_list **a, t_list *push_candidate, t_list **history)
+void bring_a_in_push_position(t_meta_stack *a, t_list *push_candidate, t_list **history)
 {
 	unsigned int		moves_for_minus_one;
 	unsigned int		moves_for_plus_one;
@@ -131,17 +131,17 @@ void bring_a_in_push_position(t_list **a, t_list *push_candidate, t_list **histo
 	int					value_of_push_candidate;
 
 	value_of_push_candidate = CONTENT_OF_ELEMENT(push_candidate)->i;
-	minus_one = get_biggest_element_smaller_than_candidate((*a), value_of_push_candidate);
-	plus_one = get_smallest_element_bigger_than_candidate((*a), value_of_push_candidate);
+	minus_one = get_biggest_element_smaller_than_candidate(a->stack, value_of_push_candidate);
+	plus_one = get_smallest_element_bigger_than_candidate(a->stack, value_of_push_candidate);
 	if (minus_one)
-		moves_for_minus_one = calc_moves_to_bottom((*a), minus_one);
+		moves_for_minus_one = calc_moves_to_bottom(a->stack, minus_one);
 	else
 	{
 		move_to_bottom(a, plus_one, history);
 		return ;
 	}
 	if (plus_one)
-		moves_for_plus_one = calc_moves_to_top((*a), plus_one);
+		moves_for_plus_one = calc_moves_to_top(a->stack, plus_one);
 	else
 	{
 		move_to_top(a, minus_one, history);
