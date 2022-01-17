@@ -199,12 +199,12 @@ Test(test_calc_moves_to_get_a_in_push_position, moving_bigger_element_to_top_is_
 Test(test_bring_a_in_push_position, pushing_zero_between_neg_and_pos)
 {
 	t_meta_stack	*a = generate_test_stack_2(5);
-	t_meta_stack	*b = generate_stack_b(1);
-	t_list	*element_to_push = b->stack;
+	t_meta_stack	*b = generate_stack_b(6);
+	t_list	*element_to_push = b->last;
 
 	bring_a_in_push_position(a, element_to_push, NULL);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->i, 2);
+	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->i, 31);
 	ft_lstclear(&a->stack, free);
 	free(a);
 	ft_lstclear(&b->stack, free);
