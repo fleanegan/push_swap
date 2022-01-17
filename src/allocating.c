@@ -23,3 +23,14 @@ t_meta_stack * new_meta_stack(void)
 	result->is_stack_a = 1;
 	return (result);
 }
+
+int	*malloc_int(int in)
+{
+	int	*result;
+
+	result = malloc (sizeof(int));
+	if (! result)
+		return (NULL);
+	*result = in;
+	return (result);
+}

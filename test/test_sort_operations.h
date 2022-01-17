@@ -184,7 +184,7 @@ Test(test_calc_moves_to_get_a_in_push_position, moving_bigger_element_to_top_is_
 {
 	t_meta_stack	*a = generate_test_stack_0(5);
 	t_meta_stack	*b = generate_stack_b(0);
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 	t_list			*element_to_push = b->stack;
 
 	int result = calc_moves_to_get_a_in_push_position(a, element_to_push);
@@ -230,7 +230,7 @@ Test(test_calc_moves_to_get_a_in_push_position, moving_index_plus_one_to_top_is_
 {
 	t_meta_stack	*a = generate_stack_a(2);
 	t_meta_stack	*b = generate_stack_b(0);
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 	t_list	*element_to_push = b->stack;
 
 	int result = calc_moves_to_get_a_in_push_position(a, element_to_push);

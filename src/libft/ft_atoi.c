@@ -10,12 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-static int	ft_isspace(int input)
-{
-	return ((input >= '\t' && input <= '\r') || input == ' ');
-}
+#include "libft_auxilliar.h"
 
 int	ft_atoi(const char *in)
 {

@@ -21,7 +21,7 @@ typedef struct s_meta_stack
 }	t_meta_stack;
 
 t_meta_stack	*new_meta_stack(void);
-void			push_first_element_of_a_to_b(t_meta_stack *a, t_meta_stack *b, t_list **history);
+void			push_first_element_to_the_other_stack(t_meta_stack *a, t_meta_stack *b, t_list **history);
 void		swap_first_two_elements(t_meta_stack *meta_stack, t_list **history);
 void		rotate(t_meta_stack *meta_stack, t_list **history);
 void		reverse_rotate(t_meta_stack *metastack, t_list **history);
@@ -51,4 +51,13 @@ t_list		*calc_element_to_push(t_meta_stack *a, t_meta_stack *b);
 void		rotate_a_back_in_order(t_meta_stack *a, t_list **history);
 void		sort_b_back_into_a(t_meta_stack *a, t_meta_stack *b, t_list **history);
 t_list		*russian_algorithm(t_meta_stack *a);
+int			*malloc_int(int in);
+
+
+// parsing
+int	is_str_parsable(char *in);
+int * parse_one_string(char *in);
+int	does_fit_into_int(const char *in);
+t_list		*char_input_to_int_list(int argc, const char **argv);
+
 #endif //PUSH_SWAP_H

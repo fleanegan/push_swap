@@ -19,7 +19,7 @@ void	fill_b(t_meta_stack *a, t_meta_stack *b, t_list **history)
 //			reverse_rotate(a, history);
 		}
 		else if (! CONTENT_OF_ELEMENT(a->stack)->should_stay_on_stack_a)
-			push_first_element_of_a_to_b(a, b, history);
+			push_first_element_to_the_other_stack(a, b, history);
 		else
 			rotate(a, history);
 //			reverse_rotate(a, history);
