@@ -6,7 +6,7 @@ Test(test_stack_operations, pushing_from_empty_stack_does_noting)
 	t_meta_stack	*a = new_meta_stack();
 	t_meta_stack	*b = new_meta_stack();
 
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 }
 
 Test(test_stack_operations, pushing_from_a_puts_element_in_front_of_b)
@@ -14,7 +14,7 @@ Test(test_stack_operations, pushing_from_a_puts_element_in_front_of_b)
 	t_meta_stack	*a = generate_stack_a(1);
 	t_meta_stack	*b = generate_stack_b(0);
 
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 
 	cr_assert_eq(CONTENT_OF_ELEMENT(b->stack)->index, 0);
 	ft_lstclear(&a->stack, free);
@@ -29,7 +29,7 @@ Test(test_stack_operations, pushing_updates_history_list)
 	t_meta_stack	*b = generate_stack_b(0);
 	t_list			*history = NULL;
 
-	push_first_element_of_a_to_b(a, b, &history);
+	push_first_element_to_the_other_stack(a, b, &history);
 
 	cr_assert_str_eq(history->content, "pb\n");
 	ft_lstclear(&a->stack, free);
@@ -43,7 +43,7 @@ Test(test_stack_operations, pushing_updates_size_in_both_stacks)
 {
 	t_meta_stack	*a = generate_stack_a(1);
 	t_meta_stack	*b = generate_stack_b(0);
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 
 	cr_assert_eq(b->size, 1);
 	cr_assert_eq(a->size, 0);
@@ -58,7 +58,7 @@ Test(test_stack_operations, pushing_on_empty_list_updates_meta_last)
 	t_meta_stack	*a = generate_stack_a(1);
 	t_meta_stack	*b = generate_stack_b(0);
 
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 
 	cr_assert_eq(b->last, b->stack);
 	ft_lstclear(&a->stack, free);
@@ -73,7 +73,7 @@ Test(test_stack_operations, pushing_from_b_writes_pa_in_history_list)
 	t_meta_stack	*b = generate_stack_b(1);
 	t_list			*history = NULL;
 
-	push_first_element_of_a_to_b(b, a, &history);
+	push_first_element_to_the_other_stack(b, a, &history);
 
 	cr_assert_str_eq(history->content, "pa\n");
 	ft_lstclear(&a->stack, free);
@@ -89,7 +89,7 @@ Test(test_stack_operations, pushing_pushing_an_empty_stack_does_not_update_histo
 	t_meta_stack	*b = generate_stack_b(0);
 	t_list			*history = NULL;
 
-	push_first_element_of_a_to_b(a, b, &history);
+	push_first_element_to_the_other_stack(a, b, &history);
 
 	cr_assert_null(history);
 	ft_lstclear(&a->stack, free);
@@ -104,7 +104,7 @@ Test(test_stack_operations, pushing_from_a_removes_element_from_a)
 	t_meta_stack	*a = generate_stack_a(1);
 	t_meta_stack	*b = generate_stack_b(0);
 
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 
 	cr_assert_null(a->stack);
 	ft_lstclear(&a->stack, free);
@@ -118,8 +118,8 @@ Test(test_stack_operations, pushing_twice)
 	t_meta_stack	*a = generate_stack_a(2);
 	t_meta_stack	*b = generate_stack_b(0);
 
-	push_first_element_of_a_to_b(a, b, 0);
-	push_first_element_of_a_to_b(a, b, 0);
+	push_first_element_to_the_other_stack(a, b, 0);
+	push_first_element_to_the_other_stack(a, b, 0);
 
 	cr_assert_null(a->stack);
 	cr_assert_not_null(b->stack->next);

@@ -38,6 +38,6 @@ void	sort_b_back_into_a(t_meta_stack *a, t_meta_stack *b, t_list **history)
 		element_to_push = calc_element_to_push(a, b);
 		move_to_top(b, element_to_push, history);
 		bring_a_in_push_position(a, element_to_push, history);
-		push_first_element_of_a_to_b(b, a, history);
+		push_first_element_to_the_other_stack(b, a, history);
 	}
 }

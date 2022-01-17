@@ -27,7 +27,7 @@ Test(test_get_biggest_element_smaller_than_candidate, return_element_smaller_tha
 	t_meta_stack	*a = generate_stack_a(3);
 	rotate(a, NULL);
 	t_meta_stack	*b = generate_stack_b(0);
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 
 	t_list	*res_act = get_biggest_element_smaller_than_candidate(a->stack, CONTENT_OF_ELEMENT(b->stack)->i);
 
@@ -42,7 +42,7 @@ Test(test_get_biggest_element_smaller_than_candidate, if_no_element_found_return
 {
 	t_meta_stack	*a = generate_stack_a(2);
 	t_meta_stack	*b = generate_stack_b(0);
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 
 	t_list	*res_act = get_biggest_element_smaller_than_candidate(a->stack, CONTENT_OF_ELEMENT(b->stack)->i);
 
@@ -58,7 +58,7 @@ Test(test_get_biggest_element_smaller_than_candidate, one_element)
 	t_meta_stack	*a = generate_stack_a(3);
 	reverse_rotate(a, NULL);
 	t_meta_stack	*b = generate_stack_b(0);
-	push_first_element_of_a_to_b(a, b, NULL);
+	push_first_element_to_the_other_stack(a, b, NULL);
 
 	t_list	*res_act = get_biggest_element_smaller_than_candidate(a->stack, CONTENT_OF_ELEMENT(b->stack)->i);
 

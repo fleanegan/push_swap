@@ -15,15 +15,6 @@
 # include <string.h>
 # include <limits.h>
 
-int	*malloc_int(int in)
-{
-	int	*result;
-
-	result = malloc (sizeof(int));
-	*result = in;
-	return (result);
-}
-
 t_meta_stack	*generate_stack_a(int number_of_elements)
 {
 	t_meta_stack	*meta_stack;

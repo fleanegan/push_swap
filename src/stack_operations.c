@@ -6,7 +6,7 @@ void	cut_element_from_a_to_b(t_meta_stack *a, t_meta_stack *b);
 t_list	*pop_first_element_from_list(t_list **stack);
 t_list	*detach_last_element_from_list(t_list *stack);
 
-void	push_first_element_of_a_to_b(t_meta_stack *a, t_meta_stack *b, t_list **history)
+void	push_first_element_to_the_other_stack(t_meta_stack *a, t_meta_stack *b, t_list **history)
 {
 	if (a && a->stack)
 	{
@@ -14,7 +14,8 @@ void	push_first_element_of_a_to_b(t_meta_stack *a, t_meta_stack *b, t_list **his
 		a->size--;
 		if (! b->size++)
 			b->last = b->stack;
-		update_history(history, push_first_element_of_a_to_b, a->is_stack_a);
+		update_history(history, push_first_element_to_the_other_stack,
+					   a->is_stack_a);
 	}
 }
 
@@ -114,7 +115,7 @@ void	update_history(t_list **history, const void *caller_identifier, const int i
 			else
 				ft_lstadd_back(history, ft_lstnew("sb\n"));
 		}
-		else if (caller_identifier == push_first_element_of_a_to_b)
+		else if (caller_identifier == push_first_element_to_the_other_stack)
 		{
 			if (is_on_stack_a)
 				ft_lstadd_back(history, ft_lstnew("pb\n"));
