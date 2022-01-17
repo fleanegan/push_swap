@@ -1,117 +1,72 @@
 #include <stdio.h>
 #include "push_swap.h"
 
-int	calc_direction_to_top(t_list *stack, t_list *element_to_move)
+void rotate_stack_n_steps(t_meta_stack *meta_stack, int steps, t_list **history)
 {
-	int	stack_size;
-
-	if (! stack)
-		return (-1);
-	stack_size = ft_lstsize(stack);
-	if (! stack_size || ! element_to_move)
-		return (0);
-	if (stack == element_to_move)
-		return (0);
-	if (ft_lstget_index_of_element(stack, element_to_move) <= stack_size / 2)
-		return (-1);
+	if (steps < 0)
+		while (steps < 0)
+		{
+			reverse_rotate(meta_stack, history);
+			steps++;
+		}
 	else
-		return (1);
-}
-
-int	calc_direction_to_bottom(t_list *stack, t_list *element_to_move)
-{
-	int	stack_size;
-
-	if (! stack)
-		return (-1);
-	stack_size = ft_lstsize(stack);
-	if (! stack_size || ! element_to_move)
-		return (0);
-	if (ft_lstlast(stack) == element_to_move)
-		return (0);
-	if (ft_lstget_index_of_element(stack, element_to_move) >= stack_size / 2)
-		return (-1);
-	else
-		return (1);
+		while (steps > 0)
+		{
+			rotate(meta_stack, history);
+			steps--;
+		}
 }
 
 void	move_to_top(t_meta_stack *meta_stack, t_list *element_to_move, t_list **history)
 {
-	int	direction;
+	int moves_to_top;
 
-	if (! meta_stack)
-		return ;
-	direction = calc_direction_to_top(meta_stack->stack, element_to_move);
-	while (meta_stack->stack && element_to_move && element_to_move != meta_stack->stack)
-	{
-		if (direction == -1)
-			reverse_rotate(meta_stack, history);
-		if (direction == 1)
-			rotate(meta_stack, history);
-	}
+	moves_to_top = calc_moves_to_top(meta_stack, element_to_move);
+	rotate_stack_n_steps(meta_stack, moves_to_top, history);
 }
+//printf("moves to top %d\n", moves_to_top);
 
 void	move_to_bottom(t_meta_stack *meta_stack, t_list *element_to_move, t_list **history)
 {
-	int	direction;
+	int moves_to_bottom;
 
-	if (! meta_stack)
-		return ;
-	direction = calc_direction_to_bottom(meta_stack->stack, element_to_move);
-	while (meta_stack->stack && element_to_move && element_to_move != ft_lstlast(meta_stack->stack))
-	{
-		if (direction == -1)
-			reverse_rotate(meta_stack, history);
-		if (direction == 1)
-			rotate(meta_stack, history);
-	}
+	moves_to_bottom = calc_moves_to_bottom(meta_stack, element_to_move);
+	rotate_stack_n_steps(meta_stack, moves_to_bottom, history);
 }
 
-int	calc_moves_to_top(t_list *stack, t_list *element)
+int	calc_moves_to_top(t_meta_stack *meta_stack, t_list *element)
 {
-	unsigned int	element_index;
-	unsigned int	stack_len;
-	unsigned int	moves_upwards;
-	unsigned int	moves_downwards;
+	int	element_index;
+	int	moves_upwards;
+	int	moves_downwards;
 
-	if (! stack)
+	if (! meta_stack->stack)
 		return (0);
-	if (! element)
-		return (-1);
-	if (CONTENT_OF_ELEMENT(stack)->is_on_stack_a != CONTENT_OF_ELEMENT(element)->is_on_stack_a)
-		return (-1);
-	element_index = ft_lstget_index_of_element(stack, element);
-	stack_len = ft_lstsize(stack);
-	moves_downwards = ft_abs((int)(stack_len - element_index));
+	element_index = ft_lstget_index_of_element(meta_stack->stack, element);
+	moves_downwards = (int) meta_stack->size - element_index;
 	moves_upwards = element_index;
-	return ((int) calc_min_unsigned(moves_downwards, moves_upwards));
+	if (ft_abs(moves_downwards) < ft_abs(moves_upwards))
+		return (moves_downwards);
+	else
+		return (-1 * moves_upwards);
 }
+//	printf("size %d, element index %d, upwards %d, downwards %d\n", (int)meta_stack->size, element_index, moves_upwards, moves_downwards);
 
-int	calc_moves_to_bottom(t_list *stack, t_list *element)
+int	calc_moves_to_bottom(t_meta_stack *meta_stack, t_list *element)
 {
-	unsigned int	element_index;
-	unsigned int	stack_len;
-	unsigned int	moves_upwards;
-	unsigned int	moves_downwards;
+	int	element_index;
+	int	moves_upwards;
+	int	moves_downwards;
 
-	if (! stack)
+	if (! meta_stack->stack)
 		return (0);
-	if (! element)
-		return (-1);
-	if (CONTENT_OF_ELEMENT(stack)->is_on_stack_a != CONTENT_OF_ELEMENT(element)->is_on_stack_a)
-		return (-1);
-	element_index = ft_lstget_index_of_element(stack, element);
-	stack_len = ft_lstsize(stack);
-	moves_downwards = stack_len - element_index - 1;
-	moves_upwards = ft_abs((int)(element_index + 1));
-	return ((int) calc_min_unsigned(moves_downwards, moves_upwards));
-}
-
-int	sorting_index_equals_to(void *content, int index)
-{
-	if (content)
-		return (((t_content *)content)->index == index);
-	return (0);
+	element_index = ft_lstget_index_of_element(meta_stack->stack, element);
+	moves_downwards = (int) meta_stack->size - element_index - 1;
+	moves_upwards = element_index + 1;
+	if (ft_abs(moves_downwards) < ft_abs(moves_upwards))
+		return (moves_downwards);
+	else
+		return (-1 * moves_upwards);
 }
 
 void	rotate_a_back_in_order(t_meta_stack *a, t_list **history)
@@ -134,14 +89,14 @@ void bring_a_in_push_position(t_meta_stack *a, t_list *push_candidate, t_list **
 	minus_one = get_biggest_element_smaller_than_candidate(a->stack, value_of_push_candidate);
 	plus_one = get_smallest_element_bigger_than_candidate(a->stack, value_of_push_candidate);
 	if (minus_one)
-		moves_for_minus_one = calc_moves_to_bottom(a->stack, minus_one);
+		moves_for_minus_one = calc_moves_to_bottom(a, minus_one);
 	else
 	{
 		move_to_bottom(a, plus_one, history);
 		return ;
 	}
 	if (plus_one)
-		moves_for_plus_one = calc_moves_to_top(a->stack, plus_one);
+		moves_for_plus_one = calc_moves_to_top(a, plus_one);
 	else
 	{
 		move_to_top(a, minus_one, history);
@@ -153,7 +108,7 @@ void bring_a_in_push_position(t_meta_stack *a, t_list *push_candidate, t_list **
 		move_to_bottom(a, minus_one, history);
 }
 
-int	calc_moves_to_get_a_in_push_position(t_list *a, t_list *push_candidate)
+int	calc_moves_to_get_a_in_push_position(t_meta_stack *a, t_list *push_candidate)
 {
 	unsigned int		moves_for_minus_one;
 	unsigned int		moves_for_plus_one;
@@ -161,11 +116,11 @@ int	calc_moves_to_get_a_in_push_position(t_list *a, t_list *push_candidate)
 	t_list				*plus_one;
 	int					value_of_push_candidate;
 
-	if (! a)
-		return (1);
+	if (! a->stack)
+		return (0);
 	value_of_push_candidate = CONTENT_OF_ELEMENT(push_candidate)->i;
-	minus_one = get_biggest_element_smaller_than_candidate(a, value_of_push_candidate);
-	plus_one = get_smallest_element_bigger_than_candidate(a, value_of_push_candidate);
+	minus_one = get_biggest_element_smaller_than_candidate(a->stack, value_of_push_candidate);
+	plus_one = get_smallest_element_bigger_than_candidate(a->stack, value_of_push_candidate);
 	if (minus_one)
 		moves_for_minus_one = calc_moves_to_bottom(a, minus_one);
 	else

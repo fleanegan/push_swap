@@ -37,6 +37,7 @@ t_meta_stack	*generate_stack_a(int number_of_elements)
 	}
 	index_stack(meta_stack->stack);
 	meta_stack->size = ft_lstsize(meta_stack->stack);
+	meta_stack->last = ft_lstlast(meta_stack->stack);
 	return (meta_stack);
 }
 
@@ -67,6 +68,8 @@ t_meta_stack	*generate_test_stack_0()
 	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(0)));
 	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(31)));
 	index_stack(result->stack);
+	result->size = ft_lstsize(result->stack);
+	result->last = ft_lstlast(result->stack);
 	return (result);
 }
 
@@ -81,6 +84,8 @@ t_meta_stack	*generate_test_stack_1()
 	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(31)));
 	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(-2)));
 	index_stack(result->stack);
+	result->size = ft_lstsize(result->stack);
+	result->last = ft_lstlast(result->stack);
 	return (result);
 }
 
@@ -93,6 +98,8 @@ t_meta_stack	*generate_test_stack_2()
 	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(31)));
 	ft_lstadd_back(&result->stack, ft_lstnew(new_stack_content(-2)));
 	index_stack(result->stack);
+	result->size = ft_lstsize(result->stack);
+	result->last = ft_lstlast(result->stack);
 	return (result);
 }
 
