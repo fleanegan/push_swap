@@ -3,8 +3,8 @@
 
 int	calc_moves_to_push_element_onto_a(t_meta_stack *a, t_meta_stack *b, t_list *push_candidate)
 {
-	return (calc_moves_to_get_a_in_push_position(a, push_candidate) + 1
-		+ calc_moves_to_top(b, push_candidate));
+	return (int) (ft_abs(calc_moves_to_get_a_in_push_position(a, push_candidate)) + 1
+		+ ft_abs(calc_moves_to_top(b, push_candidate)));
 }
 
 t_list	*calc_element_to_push(t_meta_stack *a, t_meta_stack *b)

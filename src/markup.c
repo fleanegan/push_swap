@@ -37,18 +37,18 @@ int global_max_markup_count, t_list *old_candidate, t_list *new_candidate)
 		CONTENT_OF_ELEMENT(new_candidate)->index));
 }
 
-void	markup_all_elements_according_to_reference(t_list *stack, t_list *reference)
+void	markup_all_elements_according_to_reference(t_meta_stack *meta_stack, t_list *reference)
 {
-	t_list	*last_element;
+	t_list  *last_element;
 	int		has_reached_start;
 	int		global_max_value;
+	t_list	*stack;
 
-	if (! CONTENT_OF_ELEMENT(reference)->is_on_stack_a || ! stack)
-		return ;
+	stack = meta_stack->stack;
 	global_max_value = CONTENT_OF_ELEMENT(reference)->i;
 	has_reached_start = 0;
 	last_element = ft_lstlast(stack);
-	close_stack_ring(stack, last_element);
+	close_stack_ring(stack, meta_stack->last);
 	stack = reference;
 	while (! has_reached_start)
 	{
@@ -58,6 +58,7 @@ void	markup_all_elements_according_to_reference(t_list *stack, t_list *reference
 	}
 	open_stack_ring(stack, last_element);
 }
+
 
 int	count_markups(t_list *stack)
 {
@@ -94,14 +95,14 @@ int	is_swapping_a_good_idea(t_meta_stack *meta_stack, t_list *markup_reference)
 	int	markup_count_before;
 	int	markup_count_after;
 
-	markup_all_elements_according_to_reference(meta_stack->stack, markup_reference);
+	markup_all_elements_according_to_reference(meta_stack, markup_reference);
 	if (meta_stack->stack && meta_stack->stack->next
 		&& (CONTENT_OF_ELEMENT(meta_stack->stack)->should_stay_on_stack_a
 		&& CONTENT_OF_ELEMENT(meta_stack->stack->next)->should_stay_on_stack_a))
 		return (0);
 	markup_count_before = count_markups(meta_stack->stack);
 	swap_first_two_elements(meta_stack, NULL);
-	markup_all_elements_according_to_reference(meta_stack->stack, markup_reference);
+	markup_all_elements_according_to_reference(meta_stack, markup_reference);
 	markup_count_after = count_markups(meta_stack->stack);
 	swap_first_two_elements(meta_stack, NULL);
 	if (markup_count_before < markup_count_after)
