@@ -28,15 +28,6 @@ void	move_to_top(t_meta_stack *meta_stack, t_list *element_to_move, t_list **his
 	moves_to_top = calc_moves_to_top(meta_stack, element_to_move);
 	rotate_stack_n_steps(meta_stack, moves_to_top, history);
 }
-//printf("moves to top %d\n", moves_to_top);
-
-void	move_to_bottom(t_meta_stack *meta_stack, t_list *element_to_move, t_list **history)
-{
-	int	moves_to_bottom;
-
-	moves_to_bottom = calc_moves_to_bottom(meta_stack, element_to_move);
-	rotate_stack_n_steps(meta_stack, moves_to_bottom, history);
-}
 
 int	calc_moves_to_top(t_meta_stack *meta_stack, t_list *element)
 {

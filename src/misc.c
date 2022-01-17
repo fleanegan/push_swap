@@ -44,3 +44,10 @@ t_list	*get_smallest_element_bigger_than_candidate(t_list *a, int value_of_candi
 		return (NULL);
 	return (get_element_which_is(a, value_of_candidate, minimizing_result));
 }
+
+int     sorting_index_equals_to(void *content, int index)
+{
+	if (content)
+		return (((t_content *)content)->index == index);
+	return (0);
+}
