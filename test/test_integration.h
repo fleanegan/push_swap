@@ -1,6 +1,6 @@
 #include "test_utils.h"
 
-Test(test_integration, simple_valid_input, .disabled=false)
+Test(test_integration, simple_valid_input, .disabled=true)
 {
 	t_meta_stack	*a = generate_test_stack_0();
 
