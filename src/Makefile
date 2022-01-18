@@ -20,6 +20,10 @@ ${NAME}:			$(SRCS) $(HEAD)
 
 all:				${NAME}
 
+debug:				$(SRCS) $(HEAD)
+					$(MAKE) -C  ./libft/ all
+					${CC} ${CFLAGS} -g -o $(NAME) $(SRCS) $(ILIBFT)
+
 clean:
 					$(MAKE) -C  ./libft/ clean
 					${RM} ${OBJS}
