@@ -32,9 +32,25 @@ t_list	*russian_algorithm(t_meta_stack *a)
 
 #ifndef TESTING
 
-int	main(void)
+int	main(int argc, const char **argv)
 {
-	ft_putendl_fd("test", 1);
-	return (0);
+	t_meta_stack	*int_input;
+	t_list			*history;
+
+	if (argc < 2)
+	{
+		ft_putendl_fd("not enough arguments", 2);
+		return (0);
+	}
+	int_input = generate_stack(argc, argv + 1);
+	if (! int_input)
+	{
+		ft_putendl_fd("Error",2);
+		return (0);
+	}
+	history = russian_algorithm(int_input);
+	ft_lstput_str_bonus(history);
+	ft_putendl_fd("operations needed:", 1);
+	ft_putnbr_fd(ft_lstsize(history), 1);
 }
 #endif

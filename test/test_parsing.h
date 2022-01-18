@@ -9,49 +9,32 @@ const char	**create_valid_input(int len)
 	return (result);
 }
 
-Test(test_parsing, single_str_can_be_handled_by_atoi)
+const char	**create_invalid_input(int len)
 {
-	int		argc = 1;
-	const char	**argv = create_valid_input(argc);
-
-	t_list	*int_input = char_input_to_int_list(argc, argv);
-
-	cr_assert_eq(*(int*) int_input->content, 0, "act val %d", *(int*) int_input->content);
-	free_2d_char_array((char**) argv);
-	ft_lstclear(&int_input, free);
-}
-
-Test(test_parsing, input_is_simple_valid_string_array)
-{
-	int		argc = 2;
-	const char	**argv = create_valid_input(argc);
-
-	t_list	*int_input = char_input_to_int_list(argc, argv);
-
-	cr_assert_eq(*(int*) int_input->content, 0, "act val %d", *(int*) int_input->content);
-	cr_assert_eq(*(int*) int_input->next->content, 1, "act val %d", *(int*) int_input->next->content);
-	free_2d_char_array((char**) argv);
-	ft_lstclear(&int_input, free);
+	const char	**result = malloc(sizeof (char *) * (len + 1));
+	result[len] = NULL;
+	while (len-- > 0)
+		result[len] = ft_itoa(0);
+	return (result);
 }
 
 Test(test_parsing, input_contains_not_parsable)
 {
-	cr_assert(! is_str_parsable("p"));
+	cr_assert(! is_str_parsable("p "));
 	cr_assert(! is_str_parsable("agorgh"));
-	cr_assert(! is_str_parsable("  		234923525f"));
-	cr_assert(! is_str_parsable("p"));
-	cr_assert(! is_str_parsable("p"));
-	cr_assert(! is_str_parsable("p"));
-	cr_assert(! is_str_parsable("p"));
+	cr_assert(! is_str_parsable("234923525f"));
+	cr_assert(! is_str_parsable(" p"));
+	cr_assert(! is_str_parsable(""));
+	cr_assert(! is_str_parsable("-"));
+	cr_assert(! is_str_parsable("+"));
+	cr_assert(! is_str_parsable("1342-"));
+	cr_assert(! is_str_parsable("-p"));
 }
 
 Test(test_parsing, input_is_parsable)
 {
-	cr_assert(is_str_parsable("    2147483647"));
-	cr_assert(is_str_parsable("				12"));
-	cr_assert(is_str_parsable("  	  "));
-	cr_assert(is_str_parsable("-"));
-	cr_assert(is_str_parsable("+"));
+	cr_assert(is_str_parsable("2147483647"));
+	cr_assert(is_str_parsable("12"));
 	cr_assert(is_str_parsable("-2147483648"));
 }
 
@@ -76,26 +59,67 @@ Test(test_parsing, input_does_not_fit_into_int)
 
 Test(test_parsing, duplicate_entry)
 {
-	char	*in[3];
+	char	*in[4];
 	in[0] = "0";
-	in[1] = "0";
-	in[2] = 0;
+	in[1] = "1";
+	in[2] = "0";
+	in[3] = 0;
 
-	int does_contain_duplication = does_contain_duplication(2, (const char **) in);
+	int res_act = does_contain_duplication(4, (const char **) in);
 
-	cr_assert_null(res);
-	//free(res);
+	cr_assert(res_act);
 }
 
 
-Test(test_parsing, parse_int_min_with_space)
+Test(test_parsing, parse_int_min_succeeds)
 {
-	char	*in = "		 		-2147483648";
+	char		*in = "-2147483648";
 
-	int		*res = parse_one_string(in);
+	t_content	*res = parse_one_string(in);
 
-	cr_assert_eq(*res, INT_MIN);
+	cr_assert_eq(res->i, INT_MIN);
 	free(res);
+}
+
+Test(test_parsing, single_str_can_be_handled_by_atoi)
+{
+	int				argc = 1;
+	const char		**argv = create_valid_input(argc);
+
+	t_meta_stack	*int_input = generate_stack(argc, argv);
+
+	cr_assert_eq(CONTENT_OF_ELEMENT(int_input->stack)->i, 0);
+	free_2d_char_array((char**) argv);
+	ft_lstclear(&int_input->stack, free);
+	free(int_input);
+}
+
+Test(test_parsing, input_is_simple_valid_string_array)
+{
+	int		argc = 2;
+	const char	**argv = create_valid_input(argc);
+
+	t_meta_stack	*int_input = generate_stack(argc + 1, argv);
+
+	cr_assert_not_null(int_input->stack);
+	cr_assert_eq(CONTENT_OF_ELEMENT(int_input->stack)->i, 0);
+	cr_assert_eq(int_input->size, 2);
+	cr_assert_eq(CONTENT_OF_ELEMENT(int_input->stack->next)->i, 1);
+	free_2d_char_array((char**) argv);
+	ft_lstclear(&int_input->stack, free);
+	free(int_input);
+}
+
+Test(test_parsing, invalid_duplicate_input)
+{
+	int		argc = 2;
+	const char	**argv = create_invalid_input(argc + 1);
+
+	cr_assert(does_contain_duplication(argc, argv));
+	t_meta_stack	*int_input = generate_stack(argc, argv);
+
+	cr_assert_null(int_input);
+	free_2d_char_array((char**) argv);
 }
 
 Test(test_parsing, free_whole_list_if_one_not_parsable)
@@ -105,10 +129,8 @@ Test(test_parsing, free_whole_list_if_one_not_parsable)
 	in[1] = "w";
 	in[2] = 0;
 
-	t_list	*res = char_input_to_int_list(2, (const char **) in);
+	t_meta_stack	*res = generate_stack(2, (const char **) in);
 
 	cr_assert_null(res);
-	//free(res);
 }
 
-//TODO test for duplicate entries

@@ -44,18 +44,27 @@ void	markup_all_elements_according_to_reference(t_meta_stack *meta_stack, t_list
 	int		global_max_value;
 	t_list	*stack;
 
+	puts("beginning markup in is_swapping");
 	stack = meta_stack->stack;
 	global_max_value = CONTENT_OF_ELEMENT(reference)->i;
 	has_reached_start = 0;
-	last_element = ft_lstlast(stack);
+	puts("findingi last element");
+	last_element = meta_stack->last;
+	printf("last element %d\n", CONTENT_OF_ELEMENT(last_element)->i);
+	puts("now closing ring");
 	close_stack_ring(stack, meta_stack->last);
 	stack = reference;
+	printf("now launching the walk with reference %d\n", CONTENT_OF_ELEMENT(reference)->i);
 	while (! has_reached_start)
 	{
+		printf("current value %d,  ", CONTENT_OF_ELEMENT(stack)->i);
+		if (stack->next)
+			printf("next value %d\n", CONTENT_OF_ELEMENT(stack->next)->i);
 		markup_one_element(reference, stack, &global_max_value);
 		stack = stack->next;
 		has_reached_start = (stack == reference);
 	}
+	puts("finished the walk");
 	open_stack_ring(stack, last_element);
 }
 
@@ -95,7 +104,9 @@ int	is_swapping_a_good_idea(t_meta_stack *meta_stack, t_list *markup_reference)
 	int	markup_count_before;
 	int	markup_count_after;
 
+	puts("is good idea??");
 	markup_all_elements_according_to_reference(meta_stack, markup_reference);
+	puts("finished markup");
 	if (meta_stack->stack && meta_stack->stack->next
 		&& (CONTENT_OF_ELEMENT(meta_stack->stack)->should_stay_on_stack_a
 		&& CONTENT_OF_ELEMENT(meta_stack->stack->next)->should_stay_on_stack_a))
