@@ -54,15 +54,15 @@ Test(test_markup_count_for_element, count_equals_to_elements_greater_or_equal_to
 	free(meta_stack);
 }
 
-Test(test_markup, do_nothing_if_empty)
+Test(test_markup, on_ascending_stack_reference_is_smallest_number)
 {
-	t_meta_stack	*meta_stack = generate_stack_a(0);
+	t_meta_stack	*a = generate_stack_a(2);
 
-	t_list	*markup_reference = calc_markup_reference(meta_stack);
+	t_list			*markup_reference = calc_markup_reference(a, value_mode);
 
-	cr_assert_null(markup_reference);
-	ft_lstclear(&meta_stack->stack, free);
-	free(meta_stack);
+	cr_assert_eq(markup_reference, a->stack);
+	ft_lstclear(&a->stack, free);
+	free(a);
 }
 
 Test(test_markup, calc_markup_reference)
@@ -70,9 +70,9 @@ Test(test_markup, calc_markup_reference)
 	t_meta_stack	*meta_stack = generate_test_stack_0();
 	t_list *res_exp = ft_lstget_element_by_index(meta_stack->stack, 2);
 
-	t_list	*markup_reference = calc_markup_reference(meta_stack);
+	t_list	*markup_reference = calc_markup_reference(meta_stack, value_mode);;
 
-	cr_assert_eq(markup_reference, res_exp);
+	cr_assert_eq(markup_reference, res_exp, "act %d", CONTENT_OF_ELEMENT(markup_reference)->i);
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 }
@@ -82,7 +82,7 @@ Test(test_markup, use_first_element_if_only_one_exists)
 	t_meta_stack	*meta_stack = generate_stack_a(1);
 	t_list *res_exp = meta_stack->stack;
 
-	t_list	*markup_reference = calc_markup_reference(meta_stack);
+	t_list	*markup_reference = calc_markup_reference(meta_stack, value_mode);;
 
 	cr_assert_eq(markup_reference, res_exp);
 	ft_lstclear(&meta_stack->stack, free);
@@ -92,7 +92,7 @@ Test(test_markup, use_first_element_if_only_one_exists)
 Test(test_markup, complex_stack)
 {
 	t_meta_stack	*meta_stack = generate_test_stack_2();
-	t_list	*markup_reference = calc_markup_reference(meta_stack);
+	t_list	*markup_reference = calc_markup_reference(meta_stack, value_mode);;
 
 	markup_all_elements_according_to_reference(meta_stack, markup_reference);
 
@@ -117,7 +117,7 @@ Test(test_markup, markup_elements_does_nothing_if_candidate_not_in_a)
 Test(test_markup, markup_elements)
 {
 	t_meta_stack	*a = generate_test_stack_0();
-	t_list	*markup_reference = calc_markup_reference(a);
+	t_list	*markup_reference = calc_markup_reference(a, value_mode);
 	markup_all_elements_according_to_reference(a, markup_reference);
 
 	int	markup_count = count_markups(a->stack);
@@ -142,7 +142,7 @@ Test(test_markup, markup_list_with_one_element)
 Test(test_markup, markup_complex_list)
 {
 	t_meta_stack	*a = generate_test_stack_2();
-	t_list *reference = calc_markup_reference(a);
+	t_list *reference = calc_markup_reference(a, value_mode);
 	t_list *first_element = a->stack;
 	markup_all_elements_according_to_reference(a, reference);
 
@@ -155,17 +155,13 @@ Test(test_markup, markup_does_not_change_stack)
 {
 	t_meta_stack	*a = generate_minimal_crash_stack();
 	t_meta_stack	*copy = generate_minimal_crash_stack();
-	t_list			*markup_reference = calc_markup_reference(a);
+	t_list			*markup_reference = calc_markup_reference(a, value_mode);
 	t_list			*first_element = a->stack;
 	t_list			*last_element = a->last;
 
 	markup_all_elements_according_to_reference(a, markup_reference);
 	count_markups(a->stack);
 
-	puts("a");
-	ft_lstput_nbr_bonus(a->stack);
-	puts("copy");
-	ft_lstput_nbr_bonus(copy->stack);
 	cr_assert(ft_lstcompare(a->stack, copy->stack, is_same_value));
 	cr_assert(all_prevs_are_properly_set(a));
 	cr_assert_eq(first_element, a->stack);
@@ -179,7 +175,7 @@ Test(test_markup, markup_does_not_change_stack)
 Test(test_markup_is_swapping_a_good_idea, yes)
 {
 	t_meta_stack	*a = generate_test_stack_0();
-	t_list	*markup_reference = calc_markup_reference(a);
+	t_list	*markup_reference = calc_markup_reference(a, value_mode);
 	reverse_rotate(a, NULL);
 
 	int	result = is_swapping_a_good_idea(a, markup_reference);
@@ -193,7 +189,7 @@ Test(test_markup_is_swapping_a_good_idea, markup_is_the_same_before_and_after)
 {
 	t_meta_stack	*a = generate_test_stack_1();
 	t_list			*saved_element = a->stack;
-	t_list			*markup_reference = calc_markup_reference(a);
+	t_list			*markup_reference = calc_markup_reference(a, value_mode);
 	markup_all_elements_according_to_reference(a, markup_reference);
 	int		should_saved_element_stay_before = CONTENT_OF_ELEMENT(saved_element)->should_stay_on_stack_a;
 
@@ -209,7 +205,7 @@ Test(test_markup_is_swapping_a_good_idea, markup_is_the_same_before_and_after)
 Test(test_markup_is_swapping_a_good_idea, if_both_elements_are_allowed_to_stay_do_nothing_and_return_false)
 {
 	t_meta_stack	*a = generate_test_stack_2();
-	t_list			*markup_reference = calc_markup_reference(a);
+	t_list			*markup_reference = calc_markup_reference(a, value_mode);
 	markup_all_elements_according_to_reference(a, markup_reference);
 
 	int	result = is_swapping_a_good_idea(a, markup_reference);
@@ -223,7 +219,7 @@ Test(test_markup_is_swapping_a_good_idea, recalculates)
 {
 	t_meta_stack	*a = generate_test_stack_2();
 	t_list			*saved_element = a->stack;
-	t_list			*markup_reference = calc_markup_reference(a);
+	t_list			*markup_reference = calc_markup_reference(a, value_mode);
 	int				should_saved_element_stay_before = 0;
 	CONTENT_OF_ELEMENT(saved_element)->should_stay_on_stack_a = should_saved_element_stay_before;
 
@@ -240,7 +236,7 @@ Test(test_markup_is_swapping_a_good_idea, recalculates)
 Test(test_markup_is_swapping_a_good_idead, no)
 {
 t_meta_stack	*a = generate_test_stack_0();
-t_list			*markup_reference = calc_markup_reference(a);
+t_list			*markup_reference = calc_markup_reference(a, value_mode);
 reverse_rotate(a, NULL);
 swap_first_two_elements(a, NULL);
 markup_all_elements_according_to_reference(a, markup_reference);
@@ -255,7 +251,7 @@ free(a);
 Test(test_markup_is_swapping_a_good_idead, check_does_not_alter_stack_order)
 {
 	t_meta_stack	*a = generate_test_stack_0();
-	t_list			*markup_reference = calc_markup_reference(a);
+	t_list			*markup_reference = calc_markup_reference(a, value_mode);
 	reverse_rotate(a, NULL);
 	t_list 			*first_element = a->stack->next;
 
@@ -271,8 +267,7 @@ Test(test_markup_is_swapping_a_good_idead, checking_bug_stack_does_no)
 	t_meta_stack	*a = generate_loop_bug_stack();
 	t_list			*markup_reference = a->stack->next;
 	cr_assert_eq(CONTENT_OF_ELEMENT(markup_reference)->i, 1, "act %d", CONTENT_OF_ELEMENT(markup_reference)->i);
-	puts("a");
-	ft_lstput_nbr_bonus(a->stack);
+
 	markup_all_elements_according_to_reference(a, markup_reference);
 	int				before_is_swapping = count_elements_to_be_moved_to_b(a->stack);
 	int 			top_should_stay_after = CONTENT_OF_ELEMENT(a->stack)->should_stay_on_stack_a;

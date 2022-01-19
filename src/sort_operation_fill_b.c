@@ -13,14 +13,15 @@ int all_prevs_are_properly_set(t_meta_stack *meta_stack)
 	return (1);
 }
 
-void	fill_b(t_meta_stack *a, t_meta_stack *b, t_list **history)
+void fill_b(t_meta_stack *a, t_meta_stack *b, t_list **history,
+			enum markup_mode markup_mode)
 {
 	t_list		*markup_reference;
 
 	if (! a->stack)
 		return ;
 	all_prevs_are_properly_set(a);
-	markup_reference = calc_markup_reference(a);
+	markup_reference = calc_markup_reference(a, markup_mode);
 	markup_all_elements_according_to_reference(a, markup_reference);
 	all_prevs_are_properly_set(a);
 	while (a->stack && count_elements_to_be_moved_to_b(a->stack))
