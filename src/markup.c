@@ -1,42 +1,6 @@
 #include <stdio.h>
 #include "push_swap.h"
 
-int	is_element_fitter_than_old_candidate(int markup_count, \
-int global_max_markup_count, t_list *old_candidate, t_list *new_candidate);
-
-t_list	*calc_markup_reference(t_meta_stack *meta_stack)
-{
-	t_list	*first_element;
-	t_list	*candidate;
-	int		markup_count;
-	int		global_max_markup_count;
-
-	candidate = NULL;
-	first_element = meta_stack->stack;
-	global_max_markup_count = 0;
-	while (meta_stack->stack && (! candidate || first_element != meta_stack->stack))
-	{
-		markup_count = count_markups(meta_stack->stack);
-		if (! candidate ||
-			is_element_fitter_than_old_candidate(markup_count, global_max_markup_count, candidate, meta_stack->stack))
-		{
-			candidate = meta_stack->stack;
-			global_max_markup_count = markup_count;
-		}
-		rotate(meta_stack, NULL);
-	}
-	return candidate;
-}
-
-int	is_element_fitter_than_old_candidate(int markup_count, \
-int global_max_markup_count, t_list *old_candidate, t_list *new_candidate)
-{
-	return (markup_count > global_max_markup_count ||
-		(markup_count == global_max_markup_count &&
-		CONTENT_OF_ELEMENT(old_candidate)->index > \
-		CONTENT_OF_ELEMENT(new_candidate)->index));
-}
-
 void	markup_all_elements_according_to_reference(t_meta_stack *meta_stack, t_list *reference)
 {
 	int		has_reached_start;

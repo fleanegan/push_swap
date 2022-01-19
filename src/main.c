@@ -1,18 +1,18 @@
 #include "libft/libft.h"
 #include "push_swap.h"
 
-t_list	*russian_algorithm(t_meta_stack *a)
+t_list *russian_algorithm(t_meta_stack *a, enum markup_mode markup_mode)
 {
-	t_meta_stack 	b_orig;
 	t_meta_stack	*b;
 	t_list	*history;
 
-	b = &b_orig;
+	b = new_meta_stack();
+	b->is_stack_a = 0;
 	b->stack = NULL;
 	history = NULL;
 	ft_putendl_fd("------------>a input", 1);
 	ft_lstput_nbr_bonus(a->stack);
-	fill_b(a, b, &history);
+	fill_b(a, b, &history, markup_mode);
 	ft_putendl_fd("a after fillb", 1);
 	ft_lstput_nbr_bonus(a->stack);
 	ft_putendl_fd("b after fillb", 1);
@@ -48,9 +48,12 @@ int	main(int argc, const char **argv)
 		ft_putendl_fd("Error",2);
 		return (0);
 	}
-	history = russian_algorithm(int_input);
+	history = russian_algorithm(int_input, value_mode);
 	ft_lstput_str_bonus(history);
 	ft_putendl_fd("operations needed:", 1);
 	ft_putnbr_fd(ft_lstsize(history), 1);
+	ft_lstclear(&history, do_not_free_content);
+	ft_lstclear(&int_input->stack, free);
+	free(int_input);
 }
 #endif
