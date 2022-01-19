@@ -94,6 +94,33 @@ t_meta_stack	*generate_test_stack_2()
 	return (result);
 }
 
+t_meta_stack	*generate_loop_bug_stack()
+{
+	char	*in = {"3 1 2 4 5"};
+	char	**argv = ft_split(in, ' ');
+	t_meta_stack  *result = generate_stack(5, (const char **) argv);
+	free_2d_char_array(argv);
+	return (result);
+}
+
+t_meta_stack	*generate_minimal_crash_stack()
+{
+	char	*in = {"0 3 2 -1"};
+	char	**argv = ft_split(in, ' ');
+	t_meta_stack  *result = generate_stack(5, (const char **) argv);
+	free_2d_char_array(argv);
+	return (result);
+}
+
+t_meta_stack	*generate_huge_stack()
+{
+	char	*in = {"84 76 148 124 31 137 18 90 52 73 11 114 117 105 92 27 103 133 101 54 21 93 66 17 115 12 140 72 145 79 69 30 38 123 10 57 149 113 37 94 8 48 146 33 128 68 126 19 139 7 49 55 136 107 142 91 44 112 45 61 106 36 22 98 95 51 64 23 46 118 134 116 74 15 25 104 28 85 60 43 16 71 144 58 41 70 67 135 99 108 24 131 47 83 75 6 120 122 42 111 65 13 4 127 110 78 129 82 26 9 53 87 125 14 35 62 1 86 132 0 89 80 119 50 3 147 63 32 56 138 141 88 97 102 81 29 100 39 96 40 34 20 121 2 130 109 143 59 5 77"};
+	char	**argv = ft_split(in, ' ');
+	t_meta_stack  *result = generate_stack(151, (const char **) argv);
+	free_2d_char_array(argv);
+	return (result);
+}
+
 void	mark_stack_as_stay_on_a(t_list *stack, int value)
 {
 	while (stack)

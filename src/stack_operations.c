@@ -31,14 +31,22 @@ void	cut_element_from_a_to_b(t_meta_stack *a, t_meta_stack *b) {
 
 void	swap_first_two_elements(t_meta_stack *meta_stack, t_list **history)
 {
-	t_list	*tmp;
+	t_list	*next_head;
+	t_list	*current_head;
 
 	if (meta_stack && meta_stack->stack && meta_stack->stack->next)
 	{
-		tmp = meta_stack->stack->next;
-		meta_stack->stack->next = tmp->next;
-		tmp->next = meta_stack->stack;
-		meta_stack->stack = tmp;
+		current_head = meta_stack->stack;
+		next_head = current_head->next;
+		if (next_head == meta_stack->last)
+			meta_stack->last = meta_stack->stack;
+		current_head->next = next_head->next;
+		next_head->next = current_head;
+		meta_stack->stack = next_head;
+		next_head->prev = NULL;
+		current_head->prev = next_head;
+		if (current_head->next)
+			current_head->next->prev = current_head;
 		update_history(history, swap_first_two_elements, meta_stack->is_stack_a);
 	}
 }
@@ -50,6 +58,8 @@ void	rotate(t_meta_stack *meta_stack, t_list **history)
 	if (meta_stack->stack && meta_stack->stack->next)
 	{
 		last_element = detach_last_element_from_list(meta_stack->stack);
+		if (! last_element->prev)
+			printf("last element %d has no prev!", CONTENT_OF_ELEMENT(last_element)->i);
 		meta_stack->last = last_element->prev;
 		ft_lstadd_front(&meta_stack->stack, last_element);
 		update_history(history, rotate, meta_stack->is_stack_a);
