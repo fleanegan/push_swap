@@ -61,4 +61,7 @@ int	does_fit_into_int(const char *in);
 int does_contain_duplication(int argc, const char **argv);
 t_meta_stack * generate_stack(int argc, const char **argv);
 
+// debug
+int all_prevs_are_properly_set(t_meta_stack *meta_stack);
+
 #endif //PUSH_SWAP_H

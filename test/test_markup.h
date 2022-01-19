@@ -101,8 +101,8 @@ Test(test_markup, complex_stack)
 	free(meta_stack);
 }
 
-// TODO: is this really relevant after torvalds lists
-/*Test(test_markup, markup_elements_does_nothing_if_candidate_not_in_a)
+/*// TODO: is this really relevant after torvalds lists
+Test(test_markup, markup_elements_does_nothing_if_candidate_not_in_a)
 {
 	t_meta_stack *b = generate_stack_b(2);
 	t_list	*markup_reference = b->stack;
@@ -153,14 +153,23 @@ Test(test_markup, markup_complex_list)
 
 Test(test_markup, markup_does_not_change_stack)
 {
-	t_meta_stack	*a = generate_test_stack_0();
-	t_meta_stack	*copy = generate_test_stack_0();
-	t_list	*markup_reference = calc_markup_reference(a);
+	t_meta_stack	*a = generate_minimal_crash_stack();
+	t_meta_stack	*copy = generate_minimal_crash_stack();
+	t_list			*markup_reference = calc_markup_reference(a);
+	t_list			*first_element = a->stack;
+	t_list			*last_element = a->last;
 
 	markup_all_elements_according_to_reference(a, markup_reference);
 	count_markups(a->stack);
 
+	puts("a");
+	ft_lstput_nbr_bonus(a->stack);
+	puts("copy");
+	ft_lstput_nbr_bonus(copy->stack);
 	cr_assert(ft_lstcompare(a->stack, copy->stack, is_same_value));
+	cr_assert(all_prevs_are_properly_set(a));
+	cr_assert_eq(first_element, a->stack);
+	cr_assert_eq(last_element, a->last);
 	ft_lstclear(&a->stack, free);
 	free(a);
 	ft_lstclear(&copy->stack, free);
@@ -191,8 +200,7 @@ Test(test_markup_is_swapping_a_good_idea, markup_is_the_same_before_and_after)
 	int	result = is_swapping_a_good_idea(a, markup_reference);
 
 	int		should_saved_element_stay_after = CONTENT_OF_ELEMENT(saved_element)->should_stay_on_stack_a;
-
-	cr_assert_neq(should_saved_element_stay_before, should_saved_element_stay_after, "bef %d, after %d", should_saved_element_stay_before, should_saved_element_stay_after);
+	cr_assert_eq(should_saved_element_stay_before, should_saved_element_stay_after, "bef %d, after %d", should_saved_element_stay_before, should_saved_element_stay_after);
 	cr_assert(result);
 	ft_lstclear(&a->stack, free);
 	free(a);
@@ -219,10 +227,10 @@ Test(test_markup_is_swapping_a_good_idea, recalculates)
 	int				should_saved_element_stay_before = 0;
 	CONTENT_OF_ELEMENT(saved_element)->should_stay_on_stack_a = should_saved_element_stay_before;
 
+	markup_all_elements_according_to_reference(a, markup_reference);
 	int	result = is_swapping_a_good_idea(a, markup_reference);
 
 	int		should_saved_element_stay_after = CONTENT_OF_ELEMENT(saved_element)->should_stay_on_stack_a;
-
 	cr_assert(should_saved_element_stay_after, "bef %d, after %d", should_saved_element_stay_before, should_saved_element_stay_after);
 	cr_assert(! result);
 	ft_lstclear(&a->stack, free);
@@ -231,17 +239,17 @@ Test(test_markup_is_swapping_a_good_idea, recalculates)
 
 Test(test_markup_is_swapping_a_good_idead, no)
 {
-	t_meta_stack	*a = generate_test_stack_0();
-	t_list			*markup_reference = calc_markup_reference(a);
-	reverse_rotate(a, NULL);
-	swap_first_two_elements(a, NULL);
-	markup_all_elements_according_to_reference(a, markup_reference);
+t_meta_stack	*a = generate_test_stack_0();
+t_list			*markup_reference = calc_markup_reference(a);
+reverse_rotate(a, NULL);
+swap_first_two_elements(a, NULL);
+markup_all_elements_according_to_reference(a, markup_reference);
 
-	int	result = is_swapping_a_good_idea(a, markup_reference);
+int	result = is_swapping_a_good_idea(a, markup_reference);
 
-	cr_assert(! result);
-	ft_lstclear(&a->stack, free);
-	free(a);
+cr_assert(! result);
+ft_lstclear(&a->stack, free);
+free(a);
 }
 
 Test(test_markup_is_swapping_a_good_idead, check_does_not_alter_stack_order)
@@ -254,6 +262,27 @@ Test(test_markup_is_swapping_a_good_idead, check_does_not_alter_stack_order)
 	is_swapping_a_good_idea(a, markup_reference);
 
 	cr_assert_eq(a->stack->next, first_element);
+	ft_lstclear(&a->stack, free);
+	free(a);
+}
+
+Test(test_markup_is_swapping_a_good_idead, checking_bug_stack_does_no)
+{
+	t_meta_stack	*a = generate_loop_bug_stack();
+	t_list			*markup_reference = a->stack->next;
+	cr_assert_eq(CONTENT_OF_ELEMENT(markup_reference)->i, 1, "act %d", CONTENT_OF_ELEMENT(markup_reference)->i);
+	puts("a");
+	ft_lstput_nbr_bonus(a->stack);
+	markup_all_elements_according_to_reference(a, markup_reference);
+	int				before_is_swapping = count_elements_to_be_moved_to_b(a->stack);
+	int 			top_should_stay_after = CONTENT_OF_ELEMENT(a->stack)->should_stay_on_stack_a;
+
+					is_swapping_a_good_idea(a, markup_reference);
+	int				after_is_swapping = count_elements_to_be_moved_to_b(a->stack);
+	int 			top_should_stay_before = CONTENT_OF_ELEMENT(a->stack)->should_stay_on_stack_a;
+
+	cr_assert_eq(before_is_swapping, after_is_swapping, "elem to b bef: %d ,after: %d", before_is_swapping, after_is_swapping);
+	cr_assert_eq(top_should_stay_after, top_should_stay_before);
 	ft_lstclear(&a->stack, free);
 	free(a);
 }

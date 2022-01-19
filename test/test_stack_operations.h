@@ -39,6 +39,19 @@ Test(test_stack_operations, pushing_updates_history_list)
 	ft_lstclear(&history, do_not_free_content);
 }
 
+Test(test_stack_operations, pushing_updates_prev_for_following_element)
+{
+	t_meta_stack	*a = generate_stack_a(2);
+	t_meta_stack	*b = generate_stack_b(0);
+	push_first_element_to_the_other_stack(a, b, NULL);
+
+	cr_assert_null(a->stack->prev);
+	ft_lstclear(&a->stack, free);
+	ft_lstclear(&b->stack, free);
+	free(a);
+	free(b);
+}
+
 Test(test_stack_operations, pushing_updates_size_in_both_stacks)
 {
 	t_meta_stack	*a = generate_stack_a(1);
@@ -136,6 +149,36 @@ Test(test_stack_operations, swapping_empty_stack_does_noting)
 	t_meta_stack	*a = generate_stack_a(0);
 
 	swap_first_two_elements(a, 0);
+	ft_lstclear(&a->stack, free);
+	free(a);
+}
+
+Test(test_stack_operations, swapping_updates_prev_and_next)
+{
+	t_meta_stack	*a = generate_stack_a(3);
+	t_list			*first_element = a->stack;
+	t_list			*second_element = first_element->next;
+	t_list			*third_element = second_element->next;
+
+	swap_first_two_elements(a, NULL);
+	cr_assert_null(second_element->prev);
+	cr_assert_eq(first_element->prev, second_element);
+	cr_assert_eq(first_element->next, third_element);
+	cr_assert_eq(second_element->next, first_element);
+	cr_assert_eq(third_element->prev, first_element);
+	ft_lstclear(&a->stack, free);
+	free(a);
+}
+
+Test(test_stack_operations, if_swapping_two_element_list_set_head_accordingly)
+{
+	t_meta_stack	*a = generate_stack_a(2);
+	t_list			*first_element = a->stack;
+	t_list			*second_element = first_element->next;
+
+	swap_first_two_elements(a, NULL);
+	cr_assert_eq(a->last, first_element);
+	cr_assert_eq(a->stack, second_element);
 	ft_lstclear(&a->stack, free);
 	free(a);
 }
@@ -386,13 +429,14 @@ Test(test_stack_operations, reverse_rotating_three_elements_makes_last_first_and
 
 Test(test_stack_operations, closing_ring_makes_connection_from_last_element_to_first)
 {
-	t_meta_stack	*a = generate_stack_a(2);
+	t_meta_stack	*a = generate_huge_stack();
+	t_list			*first_element = a->stack;
 	t_list			*last_element = ft_lstlast(a->stack);
 
 	close_stack_ring(a->stack, last_element);
 
-	cr_assert_eq(ft_lstget_element_by_index(a->stack, 1)->next, a->stack);
-	cr_assert_eq(a->stack->prev, ft_lstget_element_by_index(a->stack, 1));
+	cr_assert_eq(last_element->next, first_element);
+	cr_assert_eq(a->stack->prev, last_element);
 	open_stack_ring(a->stack, last_element);
 	ft_lstclear(&a->stack, free);
 	free(a);
@@ -400,13 +444,13 @@ Test(test_stack_operations, closing_ring_makes_connection_from_last_element_to_f
 
 Test(test_stack_operations, opening_ring_sets_first_prev_and_last_next_to_NULL)
 {
-	t_meta_stack	*a = generate_stack_a(2);
-	t_list			*last_element = ft_lstlast(a->stack);
+	t_meta_stack	*a = generate_huge_stack(2);
+	t_list			*last_element = a->last;
 
 	close_stack_ring(a->stack, last_element);
 	open_stack_ring(a->stack, last_element);
 
-	cr_assert_null(ft_lstget_element_by_index(a->stack, 1)->next);
+	cr_assert_null(a->last->next);
 	cr_assert_null(a->stack->prev);
 	ft_lstclear(&a->stack, free);
 	free(a);

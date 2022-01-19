@@ -122,6 +122,15 @@ Test(test_parsing, invalid_duplicate_input)
 	free_2d_char_array((char**) argv);
 }
 
+Test(test_parsing, created_stack_has_all_prevs)
+{
+	t_meta_stack	*meta_stack = generate_huge_stack();
+
+	cr_assert(all_prevs_are_properly_set(meta_stack));
+	ft_lstclear(&meta_stack->stack, free);
+	free(meta_stack);
+}
+
 Test(test_parsing, free_whole_list_if_one_not_parsable)
 {
 	char	*in[3];
