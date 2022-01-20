@@ -15,6 +15,19 @@
 # include <string.h>
 # include <limits.h>
 
+int all_prevs_are_properly_set(t_meta_stack *meta_stack)
+{
+	t_list 			*stack = meta_stack->stack->next;
+
+	while (stack)
+	{
+		if(! stack->prev)
+			return (0);
+		stack = stack->next;
+	}
+	return (1);
+}
+
 t_meta_stack	*generate_stack_a(int number_of_elements)
 {
 	t_meta_stack	*meta_stack;
@@ -42,7 +55,7 @@ t_meta_stack	*generate_stack_b(int number_of_elements)
 	cpy = meta_stack->stack;
 	while (cpy)
 	{
-		CONTENT_OF_ELEMENT(cpy)->is_on_stack_a = 0;
+		get_content_of_element(cpy)->is_on_stack_a = 0;
 		cpy = cpy->next;
 	}
 	return (meta_stack);
@@ -133,7 +146,7 @@ void	mark_stack_as_stay_on_a(t_list *stack, int value)
 {
 	while (stack)
 	{
-		CONTENT_OF_ELEMENT(stack)->should_stay_on_stack_a = value;
+		get_content_of_element(stack)->should_stay_on_stack_a = value;
 		stack = stack->next;
 	}
 }

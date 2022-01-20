@@ -1,4 +1,15 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c 										     :+:     :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By:  <fschlute>                                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/23 09:00:50 by                   #+#    #+#             */
+/*   Updated: 2021/11/23 09:00:59 by                  ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 #include "libft/libft_auxilliar.h"
 
@@ -44,18 +55,18 @@ int	does_fit_into_int(const char *in)
 	return (1);
 }
 
-int does_contain_duplication(t_list	*stack, int compare_value)
+int	does_contain_duplication(t_list	*stack, int compare_value)
 {
 	while (stack)
 	{
-		if (CONTENT_OF_ELEMENT(stack)->i == compare_value)
+		if (get_content_of_element(stack)->i == compare_value)
 			return (1);
-		stack = stack->next;;
+		stack = stack->next;
 	}
 	return (0);
 }
 
-t_content * parse_one_string(char *in)
+t_content	*parse_one_string(char *in)
 {
 	t_content	*result;
 
@@ -65,10 +76,10 @@ t_content * parse_one_string(char *in)
 	return (result);
 }
 
-t_meta_stack * generate_stack(int argc, const char **argv)
+t_meta_stack	*generate_stack(int argc, const char **argv)
 {
 	t_meta_stack		*result;
-	char 				**tmp;
+	char				**tmp;
 	t_content			*tmp_result;
 
 	result = new_meta_stack();
@@ -76,7 +87,8 @@ t_meta_stack * generate_stack(int argc, const char **argv)
 	while (*tmp)
 	{
 		tmp_result = parse_one_string(*tmp);
-		if (! tmp_result || does_contain_duplication(result->stack,tmp_result->i))
+		if (! tmp_result || does_contain_duplication(\
+		result->stack, tmp_result->i))
 		{
 			ft_lstclear(&result->stack, free);
 			free(result);

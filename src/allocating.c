@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   allocating.c 					                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By:  <fschlute>                                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/23 09:00:50 by                   #+#    #+#             */
+/*   Updated: 2021/11/23 09:00:59 by                  ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 t_content	*new_stack_content(int in)
@@ -12,7 +24,7 @@ t_content	*new_stack_content(int in)
 	return (result);
 }
 
-t_meta_stack * new_meta_stack(void)
+t_meta_stack	*new_meta_stack(void)
 {
 	t_meta_stack	*result;
 
@@ -21,16 +33,5 @@ t_meta_stack * new_meta_stack(void)
 	result->size = 0;
 	result->last = 0;
 	result->is_stack_a = 1;
-	return (result);
-}
-
-int	*malloc_int(int in)
-{
-	int	*result;
-
-	result = malloc (sizeof(int));
-	if (! result)
-		return (NULL);
-	*result = in;
 	return (result);
 }

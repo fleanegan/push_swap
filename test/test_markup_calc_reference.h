@@ -18,7 +18,8 @@ t_list *res_exp = ft_lstget_element_by_index(meta_stack->stack, 2);
 
 t_list	*markup_reference = calc_markup_reference(meta_stack, value_mode);;
 
-cr_assert_eq(markup_reference, res_exp, "act %d", CONTENT_OF_ELEMENT(markup_reference)->i);
+cr_assert_eq(markup_reference, res_exp, "act %d",
+			 get_content_of_element(markup_reference)->i);
 ft_lstclear(&meta_stack->stack, free);
 free(meta_stack);
 }
@@ -43,7 +44,8 @@ Test(test_markup_calc_reference, use_index_markup_mode)
 	t_list	*markup_reference = calc_markup_reference(meta_stack, index_mode);
 
 	cr_assert_eq(markup_reference, res_exp, "exp: %d, got %d",
-				 CONTENT_OF_ELEMENT(res_exp)->i, CONTENT_OF_ELEMENT(markup_reference)->i);
+				 get_content_of_element(res_exp)->i,
+				 get_content_of_element(markup_reference)->i);
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 }
@@ -55,7 +57,8 @@ Test(test_markup_calc_reference, calc_markup_reference_for_faililng_case)
 
 	t_list	*markup_reference = calc_markup_reference(meta_stack, index_mode);;
 
-	cr_assert_eq(markup_reference, res_exp, "act %d", CONTENT_OF_ELEMENT(markup_reference)->i);
+	cr_assert_eq(markup_reference, res_exp, "act %d",
+				 get_content_of_element(markup_reference)->i);
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 }

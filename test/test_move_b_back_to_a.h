@@ -39,9 +39,9 @@ Test(find_element_with_minimal_steps_to_push_to_a, need_to_rotate_b)
 	t_meta_stack	*b = generate_stack_b(0);
 	push_first_element_to_the_other_stack(a, b, NULL);
 	push_first_element_to_the_other_stack(a, b, NULL);
-	CONTENT_OF_ELEMENT(b->stack)->i = 7;
+	get_content_of_element(b->stack)->i = 7;
 
-	t_list	*res_act = calc_element_to_push(a, b);
+	t_list	*res_act = find_next_element_to_push(a, b);
 
 	cr_assert_eq(res_act, b->stack->next);
 	ft_lstclear(&a->stack, free);
@@ -55,7 +55,7 @@ Test(find_element_with_minimal_steps_to_push_to_a, b_is_empty_return_NULL)
 	t_meta_stack	*a = generate_stack_a(1);
 	t_meta_stack	*b = generate_stack_b(0);
 
-	t_list	*res_act = calc_element_to_push(a, b);
+	t_list	*res_act = find_next_element_to_push(a, b);
 
 	cr_assert_null(res_act);
 	ft_lstclear(&a->stack, free);
@@ -70,7 +70,7 @@ Test(find_element_with_minimal_steps_to_push_to_a, element_is_already_on_top_of_
 	t_meta_stack	*b = generate_stack_b(0);
 	push_first_element_to_the_other_stack(a, b, NULL);
 
-	t_list	*res_act = calc_element_to_push(a, b);
+	t_list	*res_act = find_next_element_to_push(a, b);
 
 	cr_assert_eq(res_act, b->stack);
 	ft_lstclear(&a->stack, free);

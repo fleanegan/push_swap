@@ -9,7 +9,7 @@ Test(test_markup_single_element, with_higher_number_stays_on_list)
 	markup_one_element(element_to_be_marked_up, &global_max,
 					   value_mode);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(element_to_be_marked_up)->should_stay_on_stack_a, 1);
+	cr_assert_eq(get_content_of_element(element_to_be_marked_up)->should_stay_on_stack_a, 1);
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 }
@@ -37,7 +37,7 @@ Test(test_markup_single_element, with_higher_number_does_not_stay_on_list_if_bel
 	markup_one_element(element_to_be_marked_up, &global_max,
 					   value_mode);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(element_to_be_marked_up)->should_stay_on_stack_a, 0);
+	cr_assert_eq(get_content_of_element(element_to_be_marked_up)->should_stay_on_stack_a, 0);
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 }
@@ -50,7 +50,7 @@ Test(test_markup_single_element, in_index_mode_a_bigger_element_is_refused_if_in
 
 	markup_one_element(element_to_be_marked_up, &global_max, index_mode);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(element_to_be_marked_up)->should_stay_on_stack_a, 0);
+	cr_assert_eq(get_content_of_element(element_to_be_marked_up)->should_stay_on_stack_a, 0);
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 }
@@ -59,11 +59,12 @@ Test(test_markup_single_element, in_index_mode_after_successful_markup_global_ma
 {
 	t_meta_stack	*meta_stack = generate_test_stack_0();
 	t_list			*element_to_be_marked_up = ft_lstget_element_by_index(meta_stack->stack, 3);
-	int				global_max = CONTENT_OF_ELEMENT(element_to_be_marked_up)->index - 1;
+	int				global_max =
+			get_content_of_element(element_to_be_marked_up)->index - 1;
 
 	markup_one_element(element_to_be_marked_up, &global_max, index_mode);
 
-	cr_assert_eq(global_max, CONTENT_OF_ELEMENT(element_to_be_marked_up)->index);
+	cr_assert_eq(global_max, get_content_of_element(element_to_be_marked_up)->index);
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 }
@@ -126,7 +127,7 @@ Test(test_markup_all_elements_of_stack, markup_complex_stack)
 	markup_stack_by_reference(meta_stack, markup_reference,
 							  value_mode);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(meta_stack->stack)->should_stay_on_stack_a, 1);
+	cr_assert_eq(get_content_of_element(meta_stack->stack)->should_stay_on_stack_a, 1);
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 }
@@ -156,11 +157,11 @@ Test(test_markup_all_elements_of_stack, index_mode_for_failing_stack)
 {
 	t_meta_stack	*a = generate_stack_from_str(4, "-19 2 1");
 	t_list			*markup_reference = a->stack;
-	cr_assert_eq(CONTENT_OF_ELEMENT(markup_reference)->i, -19);
+	cr_assert_eq(get_content_of_element(markup_reference)->i, -19);
 
 	markup_stack_by_reference(a, markup_reference, index_mode);
 
-	cr_assert(CONTENT_OF_ELEMENT(markup_reference)->should_stay_on_stack_a);
+	cr_assert(get_content_of_element(markup_reference)->should_stay_on_stack_a);
 	cr_assert(all_prevs_are_properly_set(a));
 	ft_lstclear(&a->stack, free);
 	free(a);

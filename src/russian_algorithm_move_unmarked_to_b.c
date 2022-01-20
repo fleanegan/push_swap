@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_indexing.c				                    :+:      :+:    :+:   */
+/*   russian_algorithm_move_unmarked_to_b.c				:+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By:  <fschlute>                                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,35 +12,31 @@
 
 #include "push_swap.h"
 
-int	ascending_order(void *in, void *comp)
+void	russian_algorithm_move_unmarked_to_b(t_meta_stack *a, \
+		t_meta_stack *b, t_list **history, enum e_markup_mode mode)
 {
-	return (((t_content *)in)->i <= ((t_content *)comp)->i);
-}
+	t_list		*markup_reference;
+	int			is_done;
 
-void	do_not_free_content(void *content)
-{
-	(void) content;
-}
-
-void	*shallow_copy(void *content)
-{
-	return (content);
-}
-
-void	index_stack(t_list *stack)
-{
-	t_list	*cpy;
-	t_list	*cpy_start;
-	int		index;
-
-	index = 0;
-	cpy = ft_lstmap(stack, shallow_copy, free);
-	cpy_start = cpy;
-	ft_lstsort(&cpy, ascending_order);
-	while (cpy)
+	is_done = 0;
+	if (! a->stack)
+		return ;
+	markup_reference = calc_markup_reference(a, mode);
+	while (! is_done)
 	{
-		((t_content *) cpy->content)->index = index++;
-		cpy = cpy->next;
+		markup_stack_by_reference(a, markup_reference, mode);
+		if (is_swapping_a_good_idea(a, markup_reference, mode))
+		{
+			swap_first_two_elements(a, history);
+			reverse_rotate(a, history);
+		}
+		else if (!get_content_of_element(a->stack)->should_stay_on_stack_a)
+			push_first_element_to_the_other_stack(a, b, history);
+		else
+		{
+			is_done = count_markups(a->stack) == (int) a->size;
+			if (!is_done)
+				reverse_rotate(a, history);
+		}
 	}
-	ft_lstclear(&cpy_start, do_not_free_content);
 }
