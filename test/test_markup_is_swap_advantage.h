@@ -19,11 +19,13 @@ Test(test_markup_is_swap_advantage, markup_is_the_same_before_and_after)
 	t_list			*saved_element = a->stack;
 	t_list			*markup_reference = calc_markup_reference(a, value_mode);
 	markup_stack_by_reference(a, markup_reference, value_mode);
-	int		should_saved_element_stay_before = CONTENT_OF_ELEMENT(saved_element)->should_stay_on_stack_a;
+	int		should_saved_element_stay_before = get_content_of_element(
+			saved_element)->should_stay_on_stack_a;
 
 	int	result = is_swapping_a_good_idea(a, markup_reference, value_mode);
 
-	int		should_saved_element_stay_after = CONTENT_OF_ELEMENT(saved_element)->should_stay_on_stack_a;
+	int		should_saved_element_stay_after = get_content_of_element(
+			saved_element)->should_stay_on_stack_a;
 	cr_assert_eq(should_saved_element_stay_before, should_saved_element_stay_after, "bef %d, after %d", should_saved_element_stay_before, should_saved_element_stay_after);
 	cr_assert(result);
 	ft_lstclear(&a->stack, free);
@@ -49,12 +51,13 @@ Test(test_markup_is_swap_advantage, recalculates)
 	t_list			*saved_element = a->stack;
 	t_list			*markup_reference = calc_markup_reference(a, value_mode);
 	int				should_saved_element_stay_before = 0;
-	CONTENT_OF_ELEMENT(saved_element)->should_stay_on_stack_a = should_saved_element_stay_before;
+	get_content_of_element(saved_element)->should_stay_on_stack_a = should_saved_element_stay_before;
 
 	markup_stack_by_reference(a, markup_reference, value_mode);
 	int	result = is_swapping_a_good_idea(a, markup_reference, value_mode);
 
-	int		should_saved_element_stay_after = CONTENT_OF_ELEMENT(saved_element)->should_stay_on_stack_a;
+	int		should_saved_element_stay_after = get_content_of_element(
+			saved_element)->should_stay_on_stack_a;
 	cr_assert(should_saved_element_stay_after, "bef %d, after %d", should_saved_element_stay_before, should_saved_element_stay_after);
 	cr_assert(! result);
 	ft_lstclear(&a->stack, free);
@@ -96,9 +99,6 @@ Test(test_markup_is_swap_advantaged, swap_failure_stack_index_mode)
 	t_list			*markup_reference = calc_markup_reference(a, index_mode);
 	cr_assert_eq(a->stack, markup_reference);
 	markup_stack_by_reference(a, markup_reference, index_mode);
-	printf("marked e 0: %d\n", CONTENT_OF_ELEMENT(a->stack)->should_stay_on_stack_a);
-	printf("marked e 1: %d\n", CONTENT_OF_ELEMENT(a->stack->next)->should_stay_on_stack_a);
-	printf("marked e 2: %d\n", CONTENT_OF_ELEMENT(a->stack->next->next)->should_stay_on_stack_a);
 
 	cr_assert(is_swapping_a_good_idea(a, markup_reference, index_mode));
 	ft_lstclear(&a->stack, free);
@@ -109,15 +109,16 @@ Test(test_markup_is_swap_advantaged, checking_bug_stack_does_no)
 {
 	t_meta_stack	*a = generate_loop_bug_stack();
 	t_list			*markup_reference = a->stack->next;
-	cr_assert_eq(CONTENT_OF_ELEMENT(markup_reference)->i, 1, "act %d", CONTENT_OF_ELEMENT(markup_reference)->i);
+	cr_assert_eq(get_content_of_element(markup_reference)->i, 1, "act %d",
+				 get_content_of_element(markup_reference)->i);
 
 	markup_stack_by_reference(a, markup_reference, value_mode);
 	int				before_is_swapping = count_markups(a->stack);
-	int 			top_should_stay_after = CONTENT_OF_ELEMENT(a->stack)->should_stay_on_stack_a;
+	int 			top_should_stay_after = get_content_of_element(a->stack)->should_stay_on_stack_a;
 
 	is_swapping_a_good_idea(a, markup_reference, value_mode);
 	int				after_is_swapping = count_markups(a->stack);
-	int 			top_should_stay_before = CONTENT_OF_ELEMENT(a->stack)->should_stay_on_stack_a;
+	int 			top_should_stay_before = get_content_of_element(a->stack)->should_stay_on_stack_a;
 
 	cr_assert_eq(before_is_swapping, after_is_swapping, "elem to b bef: %d ,after: %d", before_is_swapping, after_is_swapping);
 	cr_assert_eq(top_should_stay_after, top_should_stay_before);

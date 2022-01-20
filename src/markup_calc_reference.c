@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   markup_calc_reference.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By:  <fschlute>                                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/23 09:00:50 by                   #+#    #+#             */
+/*   Updated: 2021/11/23 09:00:59 by                  ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include "push_swap.h"
 
@@ -6,24 +18,23 @@ const t_list *old_candidate)
 {
 	static int		global_max_markup_count = 0;
 	int				markup_count;
-	const t_list 	*new_candidate;
+	const t_list	*new_candidate;
 
 	new_candidate = stack;
 	markup_count = count_markups(stack);
 	if (markup_count > global_max_markup_count \
 		|| (markup_count == global_max_markup_count \
-		&& CONTENT_OF_ELEMENT(old_candidate)->index \
-		> CONTENT_OF_ELEMENT(new_candidate)->index))
+		&& get_content_of_element((t_list *) old_candidate)->index \
+		> get_content_of_element((t_list *) new_candidate)->index))
 	{
 		global_max_markup_count = markup_count;
 		return (1);
 	}
 	return (0);
 }
-// 	printf("curr cand :%d, contester: %d, curr count: %d, contester count: %d\n",
-//		   CONTENT_OF_ELEMENT(old_candidate)->i, CONTENT_OF_ELEMENT(new_candidate)->i, global_max_markup_count, markup_count);
 
-t_list *calc_markup_reference(t_meta_stack *meta_stack, enum markup_mode mode)
+t_list	*calc_markup_reference(\
+t_meta_stack *meta_stack, enum e_markup_mode mode)
 {
 	t_list	*first_element;
 	t_list	*candidate;
@@ -42,7 +53,5 @@ t_list *calc_markup_reference(t_meta_stack *meta_stack, enum markup_mode mode)
 		is_done = meta_stack->stack == first_element;
 	}
 	open_stack_ring(meta_stack->stack, meta_stack->last);
-	return candidate;
+	return (candidate);
 }
-
-

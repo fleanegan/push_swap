@@ -16,7 +16,7 @@ Test(test_stack_operations, pushing_from_a_puts_element_in_front_of_b)
 
 	push_first_element_to_the_other_stack(a, b, NULL);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(b->stack)->index, 0);
+	cr_assert_eq(get_content_of_element(b->stack)->index, 0);
 	ft_lstclear(&a->stack, free);
 	ft_lstclear(&b->stack, free);
 	free(a);
@@ -202,7 +202,7 @@ Test(test_stack_operations, swapping_stack_with_one_element_does_noting)
 
 	swap_first_two_elements(a, &history);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->index, 0);
+	cr_assert_eq(get_content_of_element(a->stack)->index, 0);
 	cr_assert_null(history);
 	ft_lstclear(&a->stack, free);
 	free(a);
@@ -215,7 +215,7 @@ Test(test_stack_operations, swapping_stack_changes_positions_of_first_and_second
 
 	swap_first_two_elements(a, 0);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->index, 1);
+	cr_assert_eq(get_content_of_element(a->stack)->index, 1);
 	ft_lstclear(&a->stack, free);
 	free(a);
 }
@@ -254,7 +254,7 @@ Test(test_stack_operations, swapping_stack_does_not_affect_other_elements)
 
 	swap_first_two_elements(a, 0);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(ft_lstget_element_by_index(a->stack, 2))->index, 2);
+	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 2))->index, 2);
 	ft_lstclear(&a->stack, free);
 	free(a);
 }
@@ -274,7 +274,7 @@ Test(test_stack_operations, rotating_stack_with_one_element_does_nothing)
 
 	rotate(a, &history);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->index, 0);
+	cr_assert_eq(get_content_of_element(a->stack)->index, 0);
 	cr_assert_null(history);
 	ft_lstclear(&a->stack, free);
 	free(a);
@@ -287,7 +287,7 @@ Test(test_stack_operations, rotating_stack_with_two_element_swaps)
 
 	rotate(a, NULL);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->index, 1);
+	cr_assert_eq(get_content_of_element(a->stack)->index, 1);
 	cr_assert_null(a->stack->prev);
 	cr_assert_eq(a->stack->next->prev, a->stack);
 	ft_lstclear(&a->stack, free);
@@ -339,9 +339,9 @@ Test(test_stack_operations, rotating_three_elements_makes_last_first_and_first_s
 
 	rotate(a, NULL);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(ft_lstget_element_by_index(a->stack, 0))->index, 2);
-	cr_assert_eq(CONTENT_OF_ELEMENT(ft_lstget_element_by_index(a->stack, 1))->index, 0);
-	cr_assert_eq(CONTENT_OF_ELEMENT(ft_lstget_element_by_index(a->stack, 2))->index, 1);
+	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 0))->index, 2);
+	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 1))->index, 0);
+	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 2))->index, 1);
 	cr_assert_null(ft_lstget_element_by_index(a->stack, 2)->next);
 	cr_assert_null(a->stack->prev);
 	ft_lstclear(&a->stack, free);
@@ -355,7 +355,7 @@ Test(test_stack_operations, reverse_rotating_stack_with_one_element_does_nothing
 
 	reverse_rotate(a, &history);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->index, 0);
+	cr_assert_eq(get_content_of_element(a->stack)->index, 0);
 	cr_assert_null(history);
 	ft_lstclear(&a->stack, free);
 	free(a);
@@ -368,7 +368,7 @@ Test(test_stack_operations, reverse_rotating_stack_with_two_element_swaps)
 
 	reverse_rotate(a, NULL);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->index, 1);
+	cr_assert_eq(get_content_of_element(a->stack)->index, 1);
 	cr_assert_null(a->stack->prev);
 	cr_assert_eq(a->stack->next->prev, a->stack);
 	ft_lstclear(&a->stack, free);
@@ -419,9 +419,9 @@ Test(test_stack_operations, reverse_rotating_three_elements_makes_last_first_and
 
 	reverse_rotate(a, NULL);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(ft_lstget_element_by_index(a->stack, 0))->index, 1);
-	cr_assert_eq(CONTENT_OF_ELEMENT(ft_lstget_element_by_index(a->stack, 1))->index, 2);
-	cr_assert_eq(CONTENT_OF_ELEMENT(ft_lstget_element_by_index(a->stack, 2))->index, 0);
+	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 0))->index, 1);
+	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 1))->index, 2);
+	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 2))->index, 0);
 	cr_assert_null(ft_lstget_element_by_index(a->stack, 2)->next);
 	ft_lstclear(&a->stack, free);
 	free(a);

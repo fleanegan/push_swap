@@ -75,7 +75,7 @@ Test(test_parsing, single_str_can_be_handled_by_atoi)
 
 	t_meta_stack	*int_input = generate_stack(argc, argv);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(int_input->stack)->i, 0);
+	cr_assert_eq(get_content_of_element(int_input->stack)->i, 0);
 	free_2d_char_array((char**) argv);
 	ft_lstclear(&int_input->stack, free);
 	free(int_input);
@@ -89,9 +89,9 @@ Test(test_parsing, input_is_simple_valid_string_array)
 	t_meta_stack	*int_input = generate_stack(argc + 1, argv);
 
 	cr_assert_not_null(int_input->stack);
-	cr_assert_eq(CONTENT_OF_ELEMENT(int_input->stack)->i, 0);
+	cr_assert_eq(get_content_of_element(int_input->stack)->i, 0);
 	cr_assert_eq(int_input->size, 2);
-	cr_assert_eq(CONTENT_OF_ELEMENT(int_input->stack->next)->i, 1);
+	cr_assert_eq(get_content_of_element(int_input->stack->next)->i, 1);
 	free_2d_char_array((char**) argv);
 	ft_lstclear(&int_input->stack, free);
 	free(int_input);

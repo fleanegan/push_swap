@@ -204,7 +204,7 @@ Test(test_bring_a_in_push_position, pushing_zero_between_neg_and_pos)
 
 	bring_a_in_push_position(a, element_to_push, NULL);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->i, 31);
+	cr_assert_eq(get_content_of_element(a->stack)->i, 31);
 	ft_lstclear(&a->stack, free);
 	free(a);
 	ft_lstclear(&b->stack, free);
@@ -242,13 +242,13 @@ Test(test_calc_moves_to_get_a_in_push_position, moving_index_plus_one_to_top_is_
 	free(b);
 }
 
-Test(sort_b_back_into_a, pushing_only_element_if_b_empties_b_and_writes_pa)
+Test(russian_algorithm_move_b_back_to_a, pushing_only_element_if_b_empties_b_and_writes_pa)
 {
 	t_meta_stack	*a = generate_stack_a(0);
 	t_meta_stack	*b = generate_stack_b(1);
 	t_list	*history = NULL;
 
-	sort_b_back_into_a(a, b, &history);
+	russian_algorithm_move_b_back_to_a(a, b, &history);
 
 	cr_assert_null(b->stack);
 	cr_assert_str_eq(history->content, "pa\n");
@@ -259,13 +259,13 @@ Test(sort_b_back_into_a, pushing_only_element_if_b_empties_b_and_writes_pa)
 	ft_lstclear(&history, do_not_free_content);
 }
 
-Test(sort_b_back_into_a, after_call_b_is_empty)
+Test(russian_algorithm_move_b_back_to_a, after_call_b_is_empty)
 {
 	t_meta_stack	*a = generate_stack_a(0);
 	t_meta_stack	*b = generate_stack_b(4);
 	t_list	*history = NULL;
 
-	sort_b_back_into_a(a, b, &history);
+	russian_algorithm_move_b_back_to_a(a, b, &history);
 
 	cr_assert_null(b->stack);
 	ft_lstclear(&a->stack, free);
@@ -283,7 +283,7 @@ Test(rotate_a_back_in_order, simple_test_all_checks_already_covered)
 
 	rotate_a_back_in_order(a, &history);
 
-	cr_assert_eq(CONTENT_OF_ELEMENT(a->stack)->i, 0);
+	cr_assert_eq(get_content_of_element(a->stack)->i, 0);
 	ft_lstclear(&a->stack, free);
 	free(a);
 	ft_lstclear(&history, do_not_free_content);

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_indexing.c				                    :+:      :+:    :+:   */
+/*   russian_algorithm_move_b_back_to_a_auxiliary.c      :+:     :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By:  <fschlute>                                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,37 +10,41 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "push_swap.h"
 
-int	ascending_order(void *in, void *comp)
+t_list	*find_next_element_to_push(t_meta_stack *a, t_meta_stack *b)
 {
-	return (((t_content *)in)->i <= ((t_content *)comp)->i);
-}
+	t_list	*result;
+	t_list	*tmp;
+	int		global_min;
+	int		tmp_moves;
 
-void	do_not_free_content(void *content)
-{
-	(void) content;
-}
-
-void	*shallow_copy(void *content)
-{
-	return (content);
-}
-
-void	index_stack(t_list *stack)
-{
-	t_list	*cpy;
-	t_list	*cpy_start;
-	int		index;
-
-	index = 0;
-	cpy = ft_lstmap(stack, shallow_copy, free);
-	cpy_start = cpy;
-	ft_lstsort(&cpy, ascending_order);
-	while (cpy)
+	tmp = b->stack;
+	result = NULL;
+	while (tmp)
 	{
-		((t_content *) cpy->content)->index = index++;
-		cpy = cpy->next;
+		tmp_moves = calc_moves_to_push_element_onto_a(a, b, tmp);
+		if (! result || tmp_moves < global_min)
+		{
+			result = tmp;
+			global_min = tmp_moves;
+		}
+		tmp = tmp->next;
 	}
-	ft_lstclear(&cpy_start, do_not_free_content);
+	return (result);
+}
+
+void	russian_algorithm_move_b_back_to_a(\
+		t_meta_stack *a, t_meta_stack *b, t_list **history)
+{
+	t_list	*element_to_push;
+
+	while (a && b && b->stack)
+	{
+		element_to_push = find_next_element_to_push(a, b);
+		move_to_top(b, element_to_push, history);
+		bring_a_in_push_position(a, element_to_push, history);
+		push_first_element_to_the_other_stack(b, a, history);
+	}
 }
