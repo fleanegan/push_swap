@@ -96,9 +96,17 @@ t_meta_stack	*generate_test_stack_2()
 
 t_meta_stack	*generate_loop_bug_stack()
 {
-	char	*in = {"3 1 2 4 5"};
+	char	*in = "3 1 2 4 5";
 	char	**argv = ft_split(in, ' ');
 	t_meta_stack  *result = generate_stack(5, (const char **) argv);
+	free_2d_char_array(argv);
+	return (result);
+}
+
+t_meta_stack	*generate_stack_from_str(int argc, char *in)
+{
+	char	**argv = ft_split(in, ' ');
+	t_meta_stack  *result = generate_stack(argc, (const char **) argv);
 	free_2d_char_array(argv);
 	return (result);
 }

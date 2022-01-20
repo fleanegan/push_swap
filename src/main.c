@@ -63,7 +63,7 @@ int	main(int argc, const char **argv)
 		ft_putendl_fd("Error",2);
 		return (0);
 	}
-	//history_index_mode = russian_algorithm(a, index_mode);
+	history_index_mode = russian_algorithm(a, index_mode);
 	history_value_mode = russian_algorithm(a, value_mode);
 		ft_putendl_fd("------------value mode------------", 1);
 	ft_lstput_str_bonus(history_value_mode);

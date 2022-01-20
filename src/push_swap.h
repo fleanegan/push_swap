@@ -65,7 +65,7 @@ int			*malloc_int(int in);
 int	is_str_parsable(char *in);
 t_content * parse_one_string(char *in);
 int	does_fit_into_int(const char *in);
-int does_contain_duplication(int argc, const char **argv);
+int does_contain_duplication(t_list *stack, int compare);
 t_meta_stack * generate_stack(int argc, const char **argv);
 
 // debug

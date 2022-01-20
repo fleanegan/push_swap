@@ -19,7 +19,6 @@ int	is_str_parsable(char *in)
 	return (contains_number);
 }
 
-
 int	does_fit_into_int(const char *in)
 {
 	int			sign;
@@ -45,31 +44,16 @@ int	does_fit_into_int(const char *in)
 	return (1);
 }
 
-int does_contain_duplication(int argc, const char **argv)
+int does_contain_duplication(t_list	*stack, int compare_value)
 {
-	char	**outer_compare_ptr;
-	char	**inner_compare_ptr;
-
-	outer_compare_ptr = (char **)argv;
-	while (--argc)
+	while (stack)
 	{
-		inner_compare_ptr = outer_compare_ptr + 1;
-		while (*inner_compare_ptr)
-		{
-			if (! ft_strncmp(*inner_compare_ptr,*outer_compare_ptr,
-						   calc_max_unsigned(ft_strlen(*inner_compare_ptr),
-											 ft_strlen(*outer_compare_ptr))))
-			{
-				return (1);
-			}
-			inner_compare_ptr++;
-		}
-		outer_compare_ptr++;
+		if (CONTENT_OF_ELEMENT(stack)->i == compare_value)
+			return (1);
+		stack = stack->next;;
 	}
 	return (0);
 }
-//			printf("inner %s, outer %s\n", *inner_compare_ptr, *outer_compare_ptr);
-
 
 t_content * parse_one_string(char *in)
 {
@@ -89,12 +73,10 @@ t_meta_stack * generate_stack(int argc, const char **argv)
 
 	result = new_meta_stack();
 	tmp = (char **) argv;
-	if (does_contain_duplication(argc, argv))
-		return (NULL);
 	while (*tmp)
 	{
 		tmp_result = parse_one_string(*tmp);
-		if (! tmp_result)
+		if (! tmp_result || does_contain_duplication(result->stack,tmp_result->i))
 		{
 			ft_lstclear(&result->stack, free);
 			free(result);
@@ -108,6 +90,3 @@ t_meta_stack * generate_stack(int argc, const char **argv)
 	}
 	return (result);
 }
-//		printf("parsing :%s", *tmp);
-//		printf("in %s ", *tmp);
-//		printf("tmp_result %d \n", *tmp_result);
