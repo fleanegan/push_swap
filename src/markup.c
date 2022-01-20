@@ -10,7 +10,10 @@ void markup_stack_by_reference(t_meta_stack *meta_stack,
 	t_list	*stack;
 
 	stack = meta_stack->stack;
-	global_max_value = CONTENT_OF_ELEMENT(reference)->i;
+	if (mode == value_mode)
+		global_max_value = CONTENT_OF_ELEMENT(reference)->i;
+	else
+		global_max_value = CONTENT_OF_ELEMENT(reference)->index;
 	has_reached_start = 0;
 	close_stack_ring(meta_stack->stack, meta_stack->last);
 	stack = reference;
@@ -33,7 +36,8 @@ void markup_element_in_value_mode(int *global_max, t_content *content)
 
 void markup_element_in_index_mode(int *global_max, t_content *content)
 {
-	content->should_stay_on_stack_a = content->index == *global_max + 1;
+	content->should_stay_on_stack_a = content->index == \
+	*global_max + 1 || content->index == *global_max;
 	if (content->should_stay_on_stack_a)
 		(*global_max)++;
 }

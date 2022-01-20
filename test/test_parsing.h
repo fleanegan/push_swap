@@ -57,19 +57,6 @@ Test(test_parsing, input_does_not_fit_into_int)
 	cr_assert(! is_parsable);
 }
 
-Test(test_parsing, duplicate_entry)
-{
-	char	*in[4];
-	in[0] = "0";
-	in[1] = "1";
-	in[2] = "0";
-	in[3] = 0;
-
-	int res_act = does_contain_duplication(4, (const char **) in);
-
-	cr_assert(res_act);
-}
-
 
 Test(test_parsing, parse_int_min_succeeds)
 {
@@ -115,7 +102,6 @@ Test(test_parsing, invalid_duplicate_input)
 	int		argc = 2;
 	const char	**argv = create_invalid_input(argc + 1);
 
-	cr_assert(does_contain_duplication(argc, argv));
 	t_meta_stack	*int_input = generate_stack(argc, argv);
 
 	cr_assert_null(int_input);

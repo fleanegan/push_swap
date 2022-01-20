@@ -151,3 +151,17 @@ Test(test_markup_all_elements_of_stack, markup_does_not_change_stack)
 	ft_lstclear(&copy->stack, free);
 	free(copy);
 }
+
+Test(test_markup_all_elements_of_stack, index_mode_for_failing_stack)
+{
+	t_meta_stack	*a = generate_stack_from_str(4, "-19 2 1");
+	t_list			*markup_reference = a->stack;
+	cr_assert_eq(CONTENT_OF_ELEMENT(markup_reference)->i, -19);
+
+	markup_stack_by_reference(a, markup_reference, index_mode);
+
+	cr_assert(CONTENT_OF_ELEMENT(markup_reference)->should_stay_on_stack_a);
+	cr_assert(all_prevs_are_properly_set(a));
+	ft_lstclear(&a->stack, free);
+	free(a);
+}
