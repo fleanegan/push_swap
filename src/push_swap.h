@@ -32,16 +32,20 @@ t_content	*new_stack_content(int in);
 void		rotate_stack_n_steps(t_meta_stack *meta_stack, int steps, t_list **history);
 void		move_to_top(t_meta_stack *meta_stack, t_list *element_to_move, t_list **history);
 void		do_not_free_content(void *content);
-void		markup_one_element(t_list *reference, t_list *element_to_be_marked_up, int *global_max);
+void		markup_one_element(t_list *element_to_be_marked_up, int *global_max,
+						enum markup_mode mode);
 t_list		*calc_markup_reference(t_meta_stack *meta_stack, enum markup_mode mode);
-void		markup_all_elements_according_to_reference(t_meta_stack *meta_stack, t_list *reference);
-int			count_markups(t_list *stack);
-int			is_swapping_a_good_idea(t_meta_stack *meta_stack, t_list *markup_reference);
+void markup_stack_by_reference(t_meta_stack *meta_stack,
+							   t_list *reference,
+							   enum markup_mode mode);
+int			count_markups(const t_list *stack);
+int is_swapping_a_good_idea(t_meta_stack *meta_stack, t_list *markup_reference,
+							enum markup_mode mode);
 void		close_stack_ring(t_list *stack, t_list *last_element);
 void		open_stack_ring(t_list *stack, t_list *last_element);
-void fill_b(t_meta_stack *a, t_meta_stack *b, t_list **history,
+void		fill_b(t_meta_stack *a, t_meta_stack *b, t_list **history,
 			enum markup_mode markup_mode);
-int			count_elements_to_be_moved_to_b(t_list *a);
+int			count_elements_to_be_moved_to_b(t_meta_stack *a);
 int			calc_moves_to_top(t_meta_stack *meta_stack, t_list *element);
 int			calc_moves_to_bottom(t_meta_stack *meta_stack, t_list *element);
 int			calc_moves_to_get_a_in_push_position(t_meta_stack *a, t_list *push_candidate);
@@ -66,5 +70,8 @@ t_meta_stack * generate_stack(int argc, const char **argv);
 
 // debug
 int all_prevs_are_properly_set(t_meta_stack *meta_stack);
+
+// test
+void	*shallow_copy(void *content);
 
 #endif //PUSH_SWAP_H

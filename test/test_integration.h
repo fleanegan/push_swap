@@ -1,13 +1,11 @@
 #include "test_utils.h"
 
-Test(test_integration, simple_valid_input, .disabled=false)
+Test(test_integration, launching_russian_algorithm_does_not_change_a)
 {
 	t_meta_stack	*a = generate_test_stack_0();
+	t_list			*cpy = ft_lstmap(a->stack, shallow_copy, do_not_free_content);
 
-	t_list	*history = russian_algorithm(a);
+	russian_algorithm(a, value_mode);
 
-	puts("history for simple valid input");
-	cr_assert_not_null(history);
-	ft_lstput_str_bonus(history);
-	cr_assert_str_eq(history->content, "ra\n");
+	cr_assert(ft_lstcompare(a->stack, cpy, is_same_value));
 }

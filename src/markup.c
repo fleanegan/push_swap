@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include "push_swap.h"
 
-void	markup_all_elements_according_to_reference(t_meta_stack *meta_stack, t_list *reference)
+void markup_stack_by_reference(t_meta_stack *meta_stack,
+							   t_list *reference,
+							   enum markup_mode mode)
 {
 	int		has_reached_start;
 	int		global_max_value;
@@ -14,7 +16,7 @@ void	markup_all_elements_according_to_reference(t_meta_stack *meta_stack, t_list
 	stack = reference;
 	while (! has_reached_start)
 	{
-		markup_one_element(reference, stack, &global_max_value);
+		markup_one_element(stack, &global_max_value, mode);
 		stack = stack->next;
 		has_reached_start = (stack == reference);
 	}
@@ -22,65 +24,28 @@ void	markup_all_elements_according_to_reference(t_meta_stack *meta_stack, t_list
 }
 
 
-int	count_markups(t_list *stack)
+void markup_element_in_value_mode(int *global_max, t_content *content)
 {
-	int		markup_count;
-
-	markup_count = 0;
-	while (stack)
-	{
-		if (CONTENT_OF_ELEMENT(stack)->should_stay_on_stack_a)
-			markup_count++;
-		stack = stack->next;
-	}
-	return (markup_count);
+	content->should_stay_on_stack_a = content->i >= *global_max;
+	if (content->should_stay_on_stack_a)
+		*global_max = content->i;
 }
 
-void	markup_one_element(t_list *reference, t_list *element_to_be_marked_up, int *global_max)
+void markup_element_in_index_mode(int *global_max, t_content *content)
+{
+	content->should_stay_on_stack_a = content->index == *global_max + 1;
+	if (content->should_stay_on_stack_a)
+		(*global_max)++;
+}
+
+void markup_one_element(t_list *element_to_be_marked_up, int *global_max,
+						enum markup_mode mode)
 {
 	t_content	*content;
 
-	if (reference && element_to_be_marked_up)
-	{
-		content = CONTENT_OF_ELEMENT(element_to_be_marked_up);
-		if (global_max)
-		{
-			content->should_stay_on_stack_a = content->i >= *global_max;
-			if (content->should_stay_on_stack_a)
-				*global_max = content->i;
-		}
-	}
-}
-
-int	is_swapping_a_good_idea(t_meta_stack *meta_stack, t_list *markup_reference)
-{
-	int	markup_count_before;
-	int	markup_count_after;
-
-	if (meta_stack->stack && meta_stack->stack->next
-		&& (CONTENT_OF_ELEMENT(meta_stack->stack)->should_stay_on_stack_a
-		&& CONTENT_OF_ELEMENT(meta_stack->stack->next)->should_stay_on_stack_a))
-		return (0);
-	markup_count_before = count_markups(meta_stack->stack);
-	swap_first_two_elements(meta_stack, NULL);
-	markup_all_elements_according_to_reference(meta_stack, markup_reference);
-	markup_count_after = count_markups(meta_stack->stack);
-	swap_first_two_elements(meta_stack, NULL);
-	markup_all_elements_according_to_reference(meta_stack, markup_reference);
-	if (markup_count_before < markup_count_after)
-		return (1);
-	return (0);
-}
-
-int	count_elements_to_be_moved_to_b(t_list *a)
-{
-	int	result;
-
-	result = 0;
-	while (a)
-	{
-		result += ! CONTENT_OF_ELEMENT(a)->should_stay_on_stack_a;
-		a = a->next;
-	}
-	return (result);
+	content = CONTENT_OF_ELEMENT(element_to_be_marked_up);
+	if (mode == value_mode)
+		markup_element_in_value_mode(global_max, content);
+	else
+		markup_element_in_index_mode(global_max, content);
 }
