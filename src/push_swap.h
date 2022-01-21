@@ -60,7 +60,7 @@ t_list			*russian_algorithm(\
 int				is_str_parsable(char *in);
 t_content		*parse_one_string(char *in);
 int				does_fit_into_int(const char *in);
-int				does_contain_duplication(t_list *stack, int compare);
+int				is_dubl(t_list *stack, int compare_value);
 t_meta_stack	*generate_stack(int argc, const char **argv);
 
 // stack operations
