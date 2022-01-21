@@ -55,7 +55,7 @@ int	does_fit_into_int(const char *in)
 	return (1);
 }
 
-int	does_contain_duplication(t_list	*stack, int compare_value)
+int	is_dubl(t_list	*stack, int compare_value)
 {
 	while (stack)
 	{
@@ -86,12 +86,11 @@ t_meta_stack	*generate_stack(int argc, const char **argv)
 	while (--argc)
 	{
 		new_content = parse_one_string(*(char **) argv);
-		if (! result || ! new_content || does_contain_duplication(\
-		result->stack, new_content->i))
+		if (! result || ! new_content || is_dubl(result->stack, new_content->i))
 		{
 			ft_lstclear(&result->stack, free);
-			free(new_content);
 			free(result);
+			free(new_content);
 			return (NULL);
 		}
 		new_element = ft_lstnew(new_content);
