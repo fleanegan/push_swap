@@ -47,6 +47,8 @@ t_list	*russian_algorithm(t_meta_stack *a, enum e_markup_mode markup_mode)
 	russian_algorithm_move_b_back_to_a(a, b, &history);
 	rotate_a_back_in_order(a, &history);
 	tear_down_russian_algorithm(a, b, a_stack_cpy);
+	if (! history)
+		history = ft_lstnew("\n");
 	return (history);
 }
 
@@ -57,10 +59,10 @@ int	print_optimal_operations(t_meta_stack *a)
 
 	history_index_mode = russian_algorithm(a, index_mode);
 	if (!history_index_mode)
-		return (0);
+		return (1);
 	history_value_mode = russian_algorithm(a, value_mode);
 	if (!history_value_mode)
-		return (0);
+		return (1);
 	if (ft_lstsize(history_index_mode) < ft_lstsize(history_value_mode))
 		ft_lstput_str_bonus(history_index_mode);
 	else
@@ -79,8 +81,7 @@ int	main(int argc, const char **argv)
 	if (argc < 2)
 		return (0);
 	a = generate_stack(argc, argv + 1);
-	if (! a || \
-		print_optimal_operations(a))
+	if (! a || print_optimal_operations(a))
 	{
 		ft_putendl_fd("Error", 2);
 		return (0);
