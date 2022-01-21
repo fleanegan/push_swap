@@ -90,6 +90,7 @@ t_meta_stack	*generate_stack(int argc, const char **argv)
 		result->stack, new_content->i))
 		{
 			ft_lstclear(&result->stack, free);
+			free(new_content);
 			free(result);
 			return (NULL);
 		}

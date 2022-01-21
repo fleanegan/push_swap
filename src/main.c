@@ -48,7 +48,7 @@ t_list	*russian_algorithm(t_meta_stack *a, enum e_markup_mode markup_mode)
 	rotate_a_back_in_order(a, &history);
 	tear_down_russian_algorithm(a, b, a_stack_cpy);
 	if (! history)
-		history = ft_lstnew("\n");
+		history = ft_lstnew("");
 	return (history);
 }
 
