@@ -57,16 +57,10 @@ int	print_optimal_operations(t_meta_stack *a)
 
 	history_index_mode = russian_algorithm(a, index_mode);
 	if (!history_index_mode)
-	{
-		ft_putendl_fd("Error", 2);
 		return (0);
-	}
 	history_value_mode = russian_algorithm(a, value_mode);
 	if (!history_value_mode)
-	{
-		ft_putendl_fd("Error", 2);
 		return (0);
-	}
 	if (ft_lstsize(history_index_mode) < ft_lstsize(history_value_mode))
 		ft_lstput_str_bonus(history_index_mode);
 	else
