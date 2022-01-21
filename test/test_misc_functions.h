@@ -26,7 +26,7 @@ Test(test_get_biggest_element_smaller_than_candidate, empty_list_does_noting_and
 Test(test_get_biggest_element_smaller_than_candidate, return_element_smaller_than_candidate)
 {
 	t_meta_stack	*a = generate_stack_a(3);
-	rotate(a, NULL);
+	reverse_rotate(a, NULL);
 	t_meta_stack	*b = generate_stack_b(0);
 	push_first_element_to_the_other_stack(a, b, NULL);
 
@@ -61,7 +61,7 @@ Test(test_get_biggest_element_smaller_than_candidate, if_no_element_found_return
 Test(test_get_biggest_element_smaller_than_candidate, one_element)
 {
 	t_meta_stack	*a = generate_stack_a(3);
-	reverse_rotate(a, NULL);
+	rotate(a, NULL);
 	t_meta_stack	*b = generate_stack_b(0);
 	push_first_element_to_the_other_stack(a, b, NULL);
 

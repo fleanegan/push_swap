@@ -26,17 +26,15 @@ void	russian_algorithm_move_unmarked_to_b(t_meta_stack *a, \
 	{
 		markup_stack_by_reference(a, markup_reference, mode);
 		if (is_swapping_a_good_idea(a, markup_reference, mode))
-		{
 			swap_first_two_elements(a, history);
-			reverse_rotate(a, history);
-		}
 		else if (!get_content_of_element(a->stack)->should_stay_on_stack_a)
-			push_first_element_to_the_other_stack(a, b, history);
-		else
 		{
-			is_done = count_markups(a->stack) == (int) a->size;
-			if (!is_done)
-				reverse_rotate(a, history);
+			push_first_element_to_the_other_stack(a, b, history);
+			continue ;
 		}
+		markup_stack_by_reference(a, markup_reference, mode);
+		is_done = count_markups(a->stack) == (int) a->size;
+		if (!is_done)
+			rotate(a, history);
 	}
 }

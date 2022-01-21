@@ -279,7 +279,7 @@ Test(rotate_a_back_in_order, simple_test_all_checks_already_covered)
 {
 	t_meta_stack	*a = generate_stack_a(3);
 	t_list *history = NULL;
-	rotate(a, NULL);
+	reverse_rotate(a, NULL);
 
 	rotate_a_back_in_order(a, &history);
 

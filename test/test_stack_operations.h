@@ -263,7 +263,7 @@ Test(test_stack_operations, rotating_empty_stack_does_nothing)
 {
 	t_meta_stack	*stack = new_meta_stack();
 
-	rotate(stack, NULL);
+	reverse_rotate(stack, NULL);
 }
 
 
@@ -272,7 +272,7 @@ Test(test_stack_operations, rotating_stack_with_one_element_does_nothing)
 	t_meta_stack 	*a = generate_stack_a(1);
 	t_list *history = NULL;
 
-	rotate(a, &history);
+	reverse_rotate(a, &history);
 
 	cr_assert_eq(get_content_of_element(a->stack)->index, 0);
 	cr_assert_null(history);
@@ -285,7 +285,7 @@ Test(test_stack_operations, rotating_stack_with_two_element_swaps)
 {
 	t_meta_stack 	*a = generate_stack_a(2);
 
-	rotate(a, NULL);
+	reverse_rotate(a, NULL);
 
 	cr_assert_eq(get_content_of_element(a->stack)->index, 1);
 	cr_assert_null(a->stack->prev);
@@ -300,7 +300,7 @@ Test(test_stack_operations, rotate_updates_meta_data)
 	t_list			*second_element = a->stack->next;
 	t_list			*third_element = a->stack->next->next;
 
-	rotate(a, NULL);
+	reverse_rotate(a, NULL);
 
 	cr_assert_eq(a->stack, third_element);
 	cr_assert_eq(a->last, second_element);
@@ -312,7 +312,7 @@ Test(test_stack_operations, rotating_stack_a_writes_ra_to_history)
 	t_meta_stack 	*a = generate_stack_a(2);
 	t_list *history = NULL;
 
-	rotate(a, &history);
+	reverse_rotate(a, &history);
 
 	cr_assert_str_eq(history->content, "ra\n");
 	ft_lstclear(&a->stack, free);
@@ -325,7 +325,7 @@ Test(test_stack_operations, rotating_stack_b_writes_rb_to_history)
 	t_meta_stack 	*b = generate_stack_b(2);
 	t_list *history = NULL;
 
-	rotate(b, &history);
+	reverse_rotate(b, &history);
 
 	cr_assert_str_eq(history->content, "rb\n");
 	ft_lstclear(&b->stack, free);
@@ -337,7 +337,7 @@ Test(test_stack_operations, rotating_three_elements_makes_last_first_and_first_s
 {
 	t_meta_stack 	*a = generate_stack_a(3);
 
-	rotate(a, NULL);
+	reverse_rotate(a, NULL);
 
 	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 0))->index, 2);
 	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 1))->index, 0);
@@ -353,7 +353,7 @@ Test(test_stack_operations, reverse_rotating_stack_with_one_element_does_nothing
 	t_meta_stack	*a = generate_stack_a(1);
 	t_list 			*history = NULL;
 
-	reverse_rotate(a, &history);
+	rotate(a, &history);
 
 	cr_assert_eq(get_content_of_element(a->stack)->index, 0);
 	cr_assert_null(history);
@@ -366,7 +366,7 @@ Test(test_stack_operations, reverse_rotating_stack_with_two_element_swaps)
 {
 	t_meta_stack	*a = generate_stack_a(2);
 
-	reverse_rotate(a, NULL);
+	rotate(a, NULL);
 
 	cr_assert_eq(get_content_of_element(a->stack)->index, 1);
 	cr_assert_null(a->stack->prev);
@@ -380,7 +380,7 @@ Test(test_stack_operations, reverse_rotating_stack_a_writes_rra_to_history)
 	t_meta_stack	*a = generate_stack_a(2);
 	t_list			*history = NULL;
 
-	reverse_rotate(a, &history);
+	rotate(a, &history);
 
 	cr_assert_str_eq(history->content, "rra\n");
 	ft_lstclear(&a->stack, free);
@@ -393,7 +393,7 @@ Test(test_stack_operations, reverse_rotating_write_meta_data)
 	t_meta_stack	*a = generate_stack_a(3);
 	t_list			*first_element = a->stack;
 
-	reverse_rotate(a, NULL);
+	rotate(a, NULL);
 
 	cr_assert_eq(a->last, first_element);
 	ft_lstclear(&a->stack, free);
@@ -405,7 +405,7 @@ Test(test_stack_operations, reverse_rotating_stack_b_writes_rrb_to_history)
 	t_meta_stack	*a = generate_stack_b(2);
 	t_list			*history = NULL;
 
-	reverse_rotate(a, &history);
+	rotate(a, &history);
 
 	cr_assert_str_eq(history->content, "rrb\n");
 	ft_lstclear(&a->stack, free);
@@ -417,7 +417,7 @@ Test(test_stack_operations, reverse_rotating_three_elements_makes_last_first_and
 {
 	t_meta_stack	*a = generate_stack_a(3);
 
-	reverse_rotate(a, NULL);
+	rotate(a, NULL);
 
 	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 0))->index, 1);
 	cr_assert_eq(get_content_of_element(ft_lstget_element_by_index(a->stack, 1))->index, 2);

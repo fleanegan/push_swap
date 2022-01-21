@@ -4,7 +4,7 @@ Test(test_markup_is_swap_advantage, yes)
 {
 	t_meta_stack	*a = generate_test_stack_0();
 	t_list	*markup_reference = calc_markup_reference(a, value_mode);
-	reverse_rotate(a, NULL);
+	rotate(a, NULL);
 
 	int	result = is_swapping_a_good_idea(a, markup_reference, value_mode);
 
@@ -68,7 +68,7 @@ Test(test_markup_is_swap_advantaged, no)
 {
 	t_meta_stack	*a = generate_test_stack_0();
 	t_list			*markup_reference = calc_markup_reference(a, value_mode);
-	reverse_rotate(a, NULL);
+	rotate(a, NULL);
 	swap_first_two_elements(a, NULL);
 	markup_stack_by_reference(a, markup_reference, value_mode);
 
@@ -83,7 +83,7 @@ Test(test_markup_is_swap_advantaged, check_does_not_alter_stack_order)
 {
 	t_meta_stack	*a = generate_test_stack_0();
 	t_list			*markup_reference = calc_markup_reference(a, value_mode);
-	reverse_rotate(a, NULL);
+	rotate(a, NULL);
 	t_list 			*first_element = a->stack->next;
 
 	is_swapping_a_good_idea(a, markup_reference, value_mode);

@@ -49,7 +49,7 @@ t_meta_stack *meta_stack, enum e_markup_mode mode)
 		markup_stack_by_reference(meta_stack, meta_stack->stack, mode);
 		if (is_element_fitter(meta_stack->stack, candidate))
 			candidate = meta_stack->stack;
-		rotate(meta_stack, NULL);
+		reverse_rotate(meta_stack, NULL);
 		is_done = meta_stack->stack == first_element;
 	}
 	open_stack_ring(meta_stack->stack, meta_stack->last);

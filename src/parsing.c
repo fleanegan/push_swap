@@ -79,26 +79,28 @@ t_content	*parse_one_string(char *in)
 t_meta_stack	*generate_stack(int argc, const char **argv)
 {
 	t_meta_stack		*result;
-	char				**tmp;
-	t_content			*tmp_result;
+	t_content			*new_content;
+	t_list				*new_element;
 
 	result = new_meta_stack();
-	tmp = (char **) argv;
-	while (*tmp)
+	while (--argc)
 	{
-		tmp_result = parse_one_string(*tmp);
-		if (! tmp_result || does_contain_duplication(\
-		result->stack, tmp_result->i))
+		new_content = parse_one_string(*(char **) argv);
+		if (! result || ! new_content || does_contain_duplication(\
+		result->stack, new_content->i))
 		{
 			ft_lstclear(&result->stack, free);
 			free(result);
 			return (NULL);
 		}
-		ft_lstadd_back(&result->stack, ft_lstnew(tmp_result));
-		result->size = argc - 1;
-		index_stack(result->stack);
-		result->last = ft_lstlast(result->stack);
-		tmp++;
+		new_element = ft_lstnew(new_content);
+		if (! new_element)
+			return (NULL);
+		ft_lstadd_back(&result->stack, new_element);
+		result->size++;
+		(char **) argv++;
 	}
+	index_stack(result->stack);
+	result->last = ft_lstlast(result->stack);
 	return (result);
 }
