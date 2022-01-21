@@ -19,7 +19,7 @@ t_meta_stack *meta_stack, int steps, t_list **history)
 	{
 		while (steps < 0)
 		{
-			reverse_rotate(meta_stack, history);
+			rotate(meta_stack, history);
 			steps++;
 		}
 	}
@@ -27,7 +27,7 @@ t_meta_stack *meta_stack, int steps, t_list **history)
 	{
 		while (steps > 0)
 		{
-			rotate(meta_stack, history);
+			reverse_rotate(meta_stack, history);
 			steps--;
 		}
 	}

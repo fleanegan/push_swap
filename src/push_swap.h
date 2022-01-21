@@ -69,8 +69,8 @@ void			push_first_element_to_the_other_stack(\
 
 void			swap_first_two_elements(\
 				t_meta_stack *meta_stack, t_list **history);
+void			reverse_rotate(t_meta_stack *meta_stack, t_list **history);
 void			rotate(t_meta_stack *meta_stack, t_list **history);
-void			reverse_rotate(t_meta_stack *metastack, t_list **history);
 void			rotate_stack_n_steps(\
 				t_meta_stack *meta_stack, int steps, t_list **history);
 void			move_to_top(\
