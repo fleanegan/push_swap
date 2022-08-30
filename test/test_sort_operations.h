@@ -66,7 +66,7 @@ Test(test_move_to_top, moving_second_element_to_top_will_use_rra)
 	move_to_top(meta_stack, second_element, &history);
 
 	cr_assert_eq(meta_stack->stack, second_element);
-	cr_assert_str_eq(history->content, "rra\n");
+	cr_assert_str_eq(history->content, "ra\n");
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 	ft_lstclear(&history, do_not_free_content);
@@ -81,8 +81,8 @@ Test(test_move_to_top, moving_third_element_to_top_will_use_rrarra)
 	move_to_top(meta_stack, c, &history);
 
 	cr_assert_eq(meta_stack->stack, c);
-	cr_assert_str_eq(history->content, "rra\n");
-	cr_assert_str_eq(history->next->content, "rra\n");
+	cr_assert_str_eq(history->content, "ra\n");
+	cr_assert_str_eq(history->next->content, "ra\n");
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 	ft_lstclear(&history, do_not_free_content);
@@ -97,7 +97,7 @@ Test(test_move_to_top, moving_second_element_to_top_will_use_ra)
 	move_to_top(meta_stack, c, &history);
 
 	cr_assert_eq(meta_stack->stack, c);
-	cr_assert_str_eq(history->content, "rra\n");
+	cr_assert_str_eq(history->content, "ra\n");
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 	ft_lstclear(&history, do_not_free_content);
@@ -112,7 +112,7 @@ Test(test_move_to_top, moving_last_element_to_top_will_use_ra)
 	move_to_top(meta_stack, c, &history);
 
 	cr_assert_eq(meta_stack->stack, c);
-	cr_assert_str_eq(history->content, "ra\n");
+	cr_assert_str_eq(history->content, "rra\n");
 	ft_lstclear(&meta_stack->stack, free);
 	free(meta_stack);
 	ft_lstclear(&history, do_not_free_content);

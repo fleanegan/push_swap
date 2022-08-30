@@ -307,27 +307,27 @@ Test(test_stack_operations, rotate_updates_meta_data)
 	ft_lstclear(&a->stack, free);
 	free(a);
 }
-Test(test_stack_operations, rotating_stack_a_writes_ra_to_history)
+Test(test_stack_operations, rotating_stack_a_writes_rra_to_history)
 {
 	t_meta_stack 	*a = generate_stack_a(2);
 	t_list *history = NULL;
 
 	reverse_rotate(a, &history);
 
-	cr_assert_str_eq(history->content, "ra\n");
+	cr_assert_str_eq(history->content, "rra\n");
 	ft_lstclear(&a->stack, free);
 	free(a);
 	ft_lstclear(&history, do_not_free_content);
 }
 
-Test(test_stack_operations, rotating_stack_b_writes_rb_to_history)
+Test(test_stack_operations, rotating_stack_b_writes_rrb_to_history)
 {
 	t_meta_stack 	*b = generate_stack_b(2);
 	t_list *history = NULL;
 
 	reverse_rotate(b, &history);
 
-	cr_assert_str_eq(history->content, "rb\n");
+	cr_assert_str_eq(history->content, "rrb\n");
 	ft_lstclear(&b->stack, free);
 	free(b);
 	ft_lstclear(&history, do_not_free_content);
@@ -375,14 +375,14 @@ Test(test_stack_operations, reverse_rotating_stack_with_two_element_swaps)
 	free(a);
 }
 
-Test(test_stack_operations, reverse_rotating_stack_a_writes_rra_to_history)
+Test(test_stack_operations, reverse_rotating_stack_a_writes_ra_to_history)
 {
 	t_meta_stack	*a = generate_stack_a(2);
 	t_list			*history = NULL;
 
 	rotate(a, &history);
 
-	cr_assert_str_eq(history->content, "rra\n");
+	cr_assert_str_eq(history->content, "ra\n");
 	ft_lstclear(&a->stack, free);
 	free(a);
 	ft_lstclear(&history, do_not_free_content);
@@ -400,14 +400,14 @@ Test(test_stack_operations, reverse_rotating_write_meta_data)
 	free(a);
 }
 
-Test(test_stack_operations, reverse_rotating_stack_b_writes_rrb_to_history)
+Test(test_stack_operations, reverse_rotating_stack_b_writes_rb_to_history)
 {
 	t_meta_stack	*a = generate_stack_b(2);
 	t_list			*history = NULL;
 
 	rotate(a, &history);
 
-	cr_assert_str_eq(history->content, "rrb\n");
+	cr_assert_str_eq(history->content, "rb\n");
 	ft_lstclear(&a->stack, free);
 	free(a);
 	ft_lstclear(&history, do_not_free_content);
